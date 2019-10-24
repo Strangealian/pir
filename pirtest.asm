@@ -28,21 +28,24 @@ LIGHT:
     CPL P1.0;
     NOP;
 	NOP;
-    MOV A,#0;
+    MOV A,#2;
     MOV DPTR,#TIMETAB;
     MOVC A,@A+DPTR;
     MOV R5,A;R5存放的数据为灯亮的秒数，通过查表得到
+    MOV R2,#0AH;存放数码管十位对应偏移地址
     MOV R3,#03H;存放数码管个位对应偏移地址
-    MOV R2,#03H;存放数码管十位对应偏移地址
- 
 LIGHTTIME:
+    
     LCALL DELAY1S;延时1s后数码管显示相应数字
     INC R3;
     MOV A,#INITONE;
-    ADD A,#9;
-    ;CJNE A,03H,CFG;
+    ADD A,#10;
+    CJNE A,03H,CFG;
     INC R2;
 CFG:
+    CJNE R3,#0DH,ASGTO;
+    MOV R3,#03H;
+ASGTO:
     DJNZ R5,LIGHTTIME;
 	CPL P1.0;
     AJMP MAIN;
