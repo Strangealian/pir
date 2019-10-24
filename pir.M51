@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/24/2019  13:12:08  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/24/2019  16:53:40  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -19,7 +19,7 @@ LINK MAP OF MODULE:  pir (PIRTEST)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     00DDH     ABSOLUTE     
+            CODE    0000H     0110H     ABSOLUTE     
 
 
 
@@ -30,22 +30,24 @@ SYMBOL TABLE OF MODULE:  pir (PIRTEST)
 
   -------         MODULE        PIRTEST
   D:00E0H         SYMBOL        ACC
-  C:00BDH         SYMBOL        BREAK
-  C:009BH         SYMBOL        DELAY
-  C:0095H         SYMBOL        DELAY1S
-  C:00BEH         SYMBOL        DELAY50MS
+  C:00E2H         SYMBOL        BREAK
+  C:00C7H         SYMBOL        DELAY
+  C:00C1H         SYMBOL        DELAY1S
+  C:00E7H         SYMBOL        DELAY50MS
   B:00A8H.7       SYMBOL        EA
   B:00A8H.3       SYMBOL        ET1
   C:007BH         SYMBOL        LIGHT
-  C:0086H         SYMBOL        LIGHTTIME
+  C:00A6H         SYMBOL        LIGHTTIME
   N:0060H         SYMBOL        LOOPTIME
   C:0060H         SYMBOL        MAIN
+  C:0086H         SYMBOL        NUMDIS
+  D:0080H         SYMBOL        P0
   D:0090H         SYMBOL        P1
   D:00A0H         SYMBOL        P2
   D:00D0H         SYMBOL        PSW
   D:008CH         SYMBOL        TH0
-  C:00CDH         SYMBOL        TIMEOUT
-  C:00D7H         SYMBOL        TIMETAB
+  C:00F6H         SYMBOL        TIMEOUT
+  C:0103H         SYMBOL        TIMETAB
   D:008AH         SYMBOL        TL0
   D:0089H         SYMBOL        TMOD
   B:0088H.6       SYMBOL        TR1
@@ -57,11 +59,11 @@ SYMBOL TABLE OF MODULE:  pir (PIRTEST)
   C:0069H         LINE#         15
   C:006BH         LINE#         16
   C:006DH         LINE#         17
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/24/2019  16:53:40  PAGE 2
+
+
   C:006EH         LINE#         18
   C:0070H         LINE#         19
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/24/2019  13:12:08  PAGE 2
-
-
   C:0072H         LINE#         20
   C:0074H         LINE#         21
   C:0075H         LINE#         22
@@ -74,44 +76,70 @@ SYMBOL TABLE OF MODULE:  pir (PIRTEST)
   C:0081H         LINE#         31
   C:0084H         LINE#         32
   C:0085H         LINE#         33
-  C:0086H         LINE#         35
-  C:0089H         LINE#         36
-  C:008BH         LINE#         37
-  C:008DH         LINE#         38
-  C:008FH         LINE#         39
-  C:0091H         LINE#         40
-  C:0093H         LINE#         41
-  C:0095H         LINE#         47
-  C:0097H         LINE#         48
-  C:0099H         LINE#         49
-  C:009BH         LINE#         51
-  C:009DH         LINE#         52
-  C:009FH         LINE#         53
-  C:00A1H         LINE#         54
+  C:0086H         LINE#         37
+  C:0088H         LINE#         38
+  C:008AH         LINE#         39
+  C:008CH         LINE#         40
+  C:008EH         LINE#         42
+  C:0091H         LINE#         43
+  C:0093H         LINE#         44
+  C:0094H         LINE#         45
+  C:0096H         LINE#         46
+  C:0098H         LINE#         47
+  C:009AH         LINE#         48
+  C:009CH         LINE#         50
+  C:009EH         LINE#         53
+  C:00A0H         LINE#         54
   C:00A2H         LINE#         55
-  C:00A4H         LINE#         56
-  C:00A7H         LINE#         57
-  C:00AAH         LINE#         58
-  C:00ADH         LINE#         59
-  C:00AFH         LINE#         60
-  C:00B1H         LINE#         61
-  C:00B3H         LINE#         62
-  C:00B6H         LINE#         63
-  C:00B9H         LINE#         64
-  C:00BBH         LINE#         65
-  C:00BDH         LINE#         67
-  C:00BEH         LINE#         71
-  C:00C1H         LINE#         72
-  C:00C4H         LINE#         73
-  C:00C7H         LINE#         74
-  C:00C9H         LINE#         75
-  C:00CBH         LINE#         76
-  C:00CDH         LINE#         78
-  C:00CFH         LINE#         79
-  C:00D2H         LINE#         81
-  C:00D4H         LINE#         82
-  C:00D6H         LINE#         83
+  C:00A4H         LINE#         57
+  C:00A6H         LINE#         59
+  C:00A9H         LINE#         60
+  C:00ABH         LINE#         61
+  C:00ADH         LINE#         63
+  C:00B0H         LINE#         64
+  C:00B1H         LINE#         65
+  C:00B2H         LINE#         66
+  C:00B4H         LINE#         67
+  C:00B6H         LINE#         68
+  C:00B8H         LINE#         69
+  C:00B9H         LINE#         71
+  C:00BBH         LINE#         72
+  C:00BDH         LINE#         73
+  C:00BFH         LINE#         74
+  C:00C1H         LINE#         80
+  C:00C3H         LINE#         81
+  C:00C5H         LINE#         82
+  C:00C7H         LINE#         84
+  C:00C9H         LINE#         85
+  C:00CBH         LINE#         86
+  C:00CDH         LINE#         87
+  C:00CEH         LINE#         88
+  C:00D0H         LINE#         89
+  C:00D3H         LINE#         90
+  C:00D6H         LINE#         91
+  C:00D9H         LINE#         92
+  C:00DBH         LINE#         93
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/24/2019  16:53:40  PAGE 3
+
+
+  C:00DDH         LINE#         94
+  C:00DFH         LINE#         95
+  C:00E2H         LINE#         99
+  C:00E4H         LINE#         100
+  C:00E6H         LINE#         101
+  C:00E7H         LINE#         105
+  C:00EAH         LINE#         106
+  C:00EDH         LINE#         107
+  C:00F0H         LINE#         108
+  C:00F2H         LINE#         109
+  C:00F4H         LINE#         110
+  C:00F6H         LINE#         113
+  C:00F8H         LINE#         114
+  C:00FBH         LINE#         116
+  C:00FEH         LINE#         117
+  C:0100H         LINE#         118
+  C:0102H         LINE#         119
   -------         ENDMOD        PIRTEST
 
-Program Size: data=8.0 xdata=0 code=221
+Program Size: data=8.0 xdata=0 code=272
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

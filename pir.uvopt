@@ -153,6 +153,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>R6</ItemText>
         </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>TIMETAB</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>R5</ItemText>
+        </Ww>
       </WatchWindow1>
       <DebugFlag>
         <trace>0</trace>
@@ -192,71 +202,19 @@
     <cbSel>0</cbSel>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>3</FileNumber>
+      <FileNumber>1</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>24</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>4</TopLine>
-      <CurrentLine>4</CurrentLine>
+      <TopLine>63</TopLine>
+      <CurrentLine>75</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\pirtest.asm</PathWithFileName>
       <FilenameWithoutPath>pirtest.asm</FilenameWithoutPath>
     </File>
   </Group>
-
-  <AlienFiles>
-    <PathWithFilename>D:\study\课程\pir\timer.asm</PathWithFilename>
-    <TopLine>1</TopLine>
-    <CurrentLine>14</CurrentLine>
-    <Constant>0</Constant>
-    <WindowPosition>
-      <length>0</length>
-      <flags>0</flags>
-      <showCmd>0</showCmd>
-      <MinPosition>
-        <xPos>0</xPos>
-        <yPos>0</yPos>
-      </MinPosition>
-      <MaxPosition>
-        <xPos>0</xPos>
-        <yPos>0</yPos>
-      </MaxPosition>
-      <NormalPosition>
-        <Top>0</Top>
-        <Left>0</Left>
-        <Right>0</Right>
-        <Bottom>0</Bottom>
-      </NormalPosition>
-    </WindowPosition>
-  </AlienFiles>
-
-  <AlienFiles>
-    <PathWithFilename>D:\study\课程\pir\ledtest.asm</PathWithFilename>
-    <TopLine>1</TopLine>
-    <CurrentLine>7</CurrentLine>
-    <Constant>0</Constant>
-    <WindowPosition>
-      <length>0</length>
-      <flags>0</flags>
-      <showCmd>0</showCmd>
-      <MinPosition>
-        <xPos>0</xPos>
-        <yPos>0</yPos>
-      </MinPosition>
-      <MaxPosition>
-        <xPos>0</xPos>
-        <yPos>0</yPos>
-      </MaxPosition>
-      <NormalPosition>
-        <Top>0</Top>
-        <Left>0</Left>
-        <Right>0</Right>
-        <Bottom>0</Bottom>
-      </NormalPosition>
-    </WindowPosition>
-  </AlienFiles>
 
   <WinLayout>
     <sActiveDebugView>默认</sActiveDebugView>
@@ -412,8 +370,8 @@
         <FloatingRect_bottom>250</FloatingRect_bottom>
         <FloatingRect_right>600</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
-        <ActiveTab>1</ActiveTab>
-        <Visible>1</Visible>
+        <ActiveTab>0</ActiveTab>
+        <Visible>0</Visible>
         <Dynamic>0</Dynamic>
       </Window>
       <Window>
@@ -580,7 +538,7 @@
         <Pinned>0</Pinned>
         <DockedRect_top>76</DockedRect_top>
         <DockedRect_left>0</DockedRect_left>
-        <DockedRect_bottom>608</DockedRect_bottom>
+        <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>210</DockedRect_right>
         <FloatingRect_top>0</FloatingRect_top>
         <FloatingRect_left>0</FloatingRect_left>
@@ -605,7 +563,7 @@
         <Pinned>0</Pinned>
         <DockedRect_top>76</DockedRect_top>
         <DockedRect_left>0</DockedRect_left>
-        <DockedRect_bottom>608</DockedRect_bottom>
+        <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>210</DockedRect_right>
         <FloatingRect_top>0</FloatingRect_top>
         <FloatingRect_left>0</FloatingRect_left>
@@ -630,7 +588,7 @@
         <Pinned>0</Pinned>
         <DockedRect_top>76</DockedRect_top>
         <DockedRect_left>0</DockedRect_left>
-        <DockedRect_bottom>608</DockedRect_bottom>
+        <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>210</DockedRect_right>
         <FloatingRect_top>0</FloatingRect_top>
         <FloatingRect_left>0</FloatingRect_left>
@@ -655,7 +613,7 @@
         <Pinned>0</Pinned>
         <DockedRect_top>76</DockedRect_top>
         <DockedRect_left>0</DockedRect_left>
-        <DockedRect_bottom>608</DockedRect_bottom>
+        <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>210</DockedRect_right>
         <FloatingRect_top>0</FloatingRect_top>
         <FloatingRect_left>0</FloatingRect_left>
@@ -680,7 +638,7 @@
         <Pinned>0</Pinned>
         <DockedRect_top>76</DockedRect_top>
         <DockedRect_left>0</DockedRect_left>
-        <DockedRect_bottom>608</DockedRect_bottom>
+        <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>210</DockedRect_right>
         <FloatingRect_top>0</FloatingRect_top>
         <FloatingRect_left>0</FloatingRect_left>
@@ -1346,9 +1304,9 @@
         <ItemNo>44</ItemNo>
         <Name>调用堆栈</Name>
         <AnchorWinID>0</AnchorWinID>
-        <AnchorWinName>编译输出</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>1</DockType>
         <DockLocation>5</DockLocation>
@@ -1357,10 +1315,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1373,7 +1331,7 @@
         <AnchorWinID>1944</AnchorWinID>
         <AnchorWinName>调用堆栈</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1382,10 +1340,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1398,7 +1356,7 @@
         <AnchorWinID>1507</AnchorWinID>
         <AnchorWinName>调用堆栈</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1407,10 +1365,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1423,7 +1381,7 @@
         <AnchorWinID>1935</AnchorWinID>
         <AnchorWinName>Locals</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1432,10 +1390,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1448,7 +1406,7 @@
         <AnchorWinID>1936</AnchorWinID>
         <AnchorWinName>Watch 1</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1457,10 +1415,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1473,7 +1431,7 @@
         <AnchorWinID>1937</AnchorWinID>
         <AnchorWinName>Watch 2</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1482,10 +1440,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1498,7 +1456,7 @@
         <AnchorWinID>1465</AnchorWinID>
         <AnchorWinName>Memory 1</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1507,10 +1465,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1523,7 +1481,7 @@
         <AnchorWinID>1466</AnchorWinID>
         <AnchorWinName>Memory 2</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1532,10 +1490,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1548,7 +1506,7 @@
         <AnchorWinID>1467</AnchorWinID>
         <AnchorWinName>Memory 3</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1557,10 +1515,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1573,7 +1531,7 @@
         <AnchorWinID>1468</AnchorWinID>
         <AnchorWinName>Memory 4</AnchorWinName>
         <OtherWinID>0</OtherWinID>
-        <OtherWinName>编译输出</OtherWinName>
+        <OtherWinName></OtherWinName>
         <WinType>1</WinType>
         <DockType>5</DockType>
         <DockLocation>2</DockLocation>
@@ -1582,10 +1540,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>263</FloatingRect_top>
-        <FloatingRect_left>942</FloatingRect_left>
-        <FloatingRect_bottom>863</FloatingRect_bottom>
-        <FloatingRect_right>1192</FloatingRect_right>
+        <FloatingRect_top>174</FloatingRect_top>
+        <FloatingRect_left>794</FloatingRect_left>
+        <FloatingRect_bottom>774</FloatingRect_bottom>
+        <FloatingRect_right>1161</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1599,25 +1557,13 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>2</ActiveTab>
+      <ActiveTab>0</ActiveTab>
       <Documents>
         <Doc>
-          <Name>D:\study\课程\pir\ledtest.asm</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>7</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>D:\study\课程\pir\timer.asm</Name>
-          <ColumnNumber>18</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>14</CurrentLine>
-        </Doc>
-        <Doc>
           <Name>.\pirtest.asm</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>4</TopLine>
-          <CurrentLine>4</CurrentLine>
+          <ColumnNumber>24</ColumnNumber>
+          <TopLine>63</TopLine>
+          <CurrentLine>75</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
