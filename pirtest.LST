@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 23:29:14 PAGE     1
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 00:43:41 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -12,8 +12,8 @@ LOC  OBJ            LINE     SOURCE
                        3     
 0000                   4     ORG 0000H;
 0000 0160              5     AJMP MAIN;
-001B                   6     ORG 001BH;T0溢出中断入口地址
-001B 01A4              7     AJMP DELAY;
+000B                   6     ORG 000BH;T0溢出中断入口地址
+000B 01A4              7     AJMP DELAY;
 0060                   8     ORG 0060H;
                        9     ;!!!!JNZ需要更改 JNZ 是为了测试
                       10     
@@ -65,13 +65,13 @@ LOC  OBJ            LINE     SOURCE
 00A4                  56     DELAY:;计数器1溢出中断出口
 00A4 C0D0             57         PUSH PSW;
 00A6 C0E0             58         PUSH ACC;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 23:29:14 PAGE     2
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 00:43:41 PAGE     2
 
 00A8 AE60             59         MOV R6,60H;
 00AA 0E               60         INC R6;
 00AB 8E60             61         MOV 60H,R6;
-00AD 758CE0           62         MOV TH0,#0E0H;加一计数器高字节
-00B0 758AC0           63         MOV TL0,#0C0H;加一计数器低字节
+00AD 758CB1           62         MOV TH0,#0B1H;加一计数器高字节
+00B0 758AE0           63         MOV TL0,#0E0H;加一计数器低字节
                       64     
                       65         
                       66          ;点亮数码管
@@ -132,14 +132,14 @@ LOC  OBJ            LINE     SOURCE
 00F6 01F8            121         AJMP DELAY50MS;
                      122     ;延时50ms子程序 65536-50000=15536=3CB0
 00F8                 123     DELAY50MS:
-00F8 758910          124         MOV TMOD,#10H;计数器0工作于方式1
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 23:29:14 PAGE     3
+00F8 758901          124         MOV TMOD,#01H;计数器1工作于方式1
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 00:43:41 PAGE     3
 
-00FB 758CE0          125         MOV TH0,#0E0H;加一计数器高字节
-00FE 758AC0          126         MOV TL0,#0C0H;加一计数器低字节
+00FB 758CB1          125         MOV TH0,#0B1H;加一计数器高字节
+00FE 758AE0          126         MOV TL0,#0E0H;加一计数器低字节
 0101 D2AF            127         SETB EA;
-0103 D28E            128         SETB TR1;
-0105 D2AB            129         SETB ET1;
+0103 D28C            128         SETB TR0;
+0105 D2A9            129         SETB ET0;
                      130         
 0107                 131     TIMEOUT:  
                      132       
@@ -157,8 +157,8 @@ LOC  OBJ            LINE     SOURCE
 0114 C0D0            144         PUSH PSW;
 0116 C0E0            145         PUSH ACC;
 0118 D2D3            146         SETB RS0;
-011A 7918            147         MOV R1,#24;
-011C 7A28            148         MOV R2,#40;
+011A 7978            147         MOV R1,#120;
+011C 7A50            148         MOV R2,#80;
 011E                 149     PW1:
 011E 00              150         NOP;
 011F 00              151         NOP;
@@ -178,7 +178,7 @@ LOC  OBJ            LINE     SOURCE
 0130 6D664F5B        165         DB 6DH,66H,4FH,5BH;
 0134 063F            166         DB 06H,3FH;
                      167     END;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 23:29:14 PAGE     4
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 00:43:41 PAGE     4
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -194,6 +194,7 @@ DELAY. . . . . . .  C ADDR   00A4H   A
 DELAY1S. . . . . .  C ADDR   00F2H   A   
 DELAY50MS. . . . .  C ADDR   00F8H   A   
 EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
 ET1. . . . . . . .  B ADDR   00A8H.3 A   
 INITONE. . . . . .  N NUMB   0003H   A   
 LIGHT. . . . . . .  C ADDR   007EH   A   
@@ -213,6 +214,7 @@ TIMEOUT. . . . . .  C ADDR   0107H   A
 TIMETAB. . . . . .  C ADDR   0129H   A   
 TL0. . . . . . . .  D ADDR   008AH   A   
 TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
 TR1. . . . . . . .  B ADDR   0088H.6 A   
 
 

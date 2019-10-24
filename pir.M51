@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/24/2019  23:29:14  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/25/2019  00:43:41  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -37,6 +37,7 @@ SYMBOL TABLE OF MODULE:  pir (PIRTEST)
   C:00F2H         SYMBOL        DELAY1S
   C:00F8H         SYMBOL        DELAY50MS
   B:00A8H.7       SYMBOL        EA
+  B:00A8H.1       SYMBOL        ET0
   B:00A8H.3       SYMBOL        ET1
   N:0003H         SYMBOL        INITONE
   C:007EH         SYMBOL        LIGHT
@@ -56,12 +57,13 @@ SYMBOL TABLE OF MODULE:  pir (PIRTEST)
   C:0129H         SYMBOL        TIMETAB
   D:008AH         SYMBOL        TL0
   D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
   B:0088H.6       SYMBOL        TR1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/25/2019  00:43:41  PAGE 2
+
+
   C:0000H         LINE#         5
-  C:001BH         LINE#         7
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/24/2019  23:29:14  PAGE 2
-
-
+  C:000BH         LINE#         7
   C:0060H         LINE#         12
   C:0063H         LINE#         13
   C:0066H         LINE#         14
@@ -117,11 +119,11 @@ SYMBOL TABLE OF MODULE:  pir (PIRTEST)
   C:00C9H         LINE#         86
   C:00CBH         LINE#         88
   C:00CDH         LINE#         90
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/25/2019  00:43:41  PAGE 3
+
+
   C:00CFH         LINE#         92
   C:00D1H         LINE#         93
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/24/2019  23:29:14  PAGE 3
-
-
   C:00D3H         LINE#         96
   C:00D6H         LINE#         97
   C:00D7H         LINE#         98

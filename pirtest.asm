@@ -3,7 +3,7 @@ INITONE EQU 03H;
 
 ORG 0000H;
 AJMP MAIN;
-ORG 001BH;T0溢出中断入口地址
+ORG 000BH;T0溢出中断入口地址
 AJMP DELAY;
 ORG 0060H;
 ;!!!!JNZ需要更改 JNZ 是为了测试
@@ -59,8 +59,8 @@ DELAY:;计数器1溢出中断出口
     MOV R6,60H;
     INC R6;
     MOV 60H,R6;
-    MOV TH0,#0E0H;加一计数器高字节
-    MOV TL0,#0C0H;加一计数器低字节
+    MOV TH0,#0B1H;加一计数器高字节
+    MOV TL0,#0E0H;加一计数器低字节
 
     
      ;点亮数码管
@@ -121,12 +121,12 @@ DELAY1S:
     AJMP DELAY50MS;
 ;延时50ms子程序 65536-50000=15536=3CB0
 DELAY50MS:
-    MOV TMOD,#10H;计数器0工作于方式1
-    MOV TH0,#0E0H;加一计数器高字节
-    MOV TL0,#0C0H;加一计数器低字节
+    MOV TMOD,#01H;计数器1工作于方式1
+    MOV TH0,#0B1H;加一计数器高字节
+    MOV TL0,#0E0H;加一计数器低字节
     SETB EA;
-    SETB TR1;
-    SETB ET1;
+    SETB TR0;
+    SETB ET0;
     
 TIMEOUT:  
   
@@ -144,8 +144,8 @@ PWNWAT: ;power on wait
     PUSH PSW;
     PUSH ACC;
     SETB RS0;
-    MOV R1,#24;
-    MOV R2,#40;
+    MOV R1,#120;
+    MOV R2,#80;
 PW1:
     NOP;
     NOP;
