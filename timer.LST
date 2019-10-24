@@ -1,0 +1,52 @@
+A51 MACRO ASSEMBLER  TIMER                                                                10/24/2019 01:18:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN timer.OBJ
+ASSEMBLER INVOKED BY: E:\Program Files\C51\BIN\A51.EXE timer.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 0130              2     AJMP START;
+001B                   3     ORG 001BH;
+001B 0144              4     AJMP T1INT;
+0030                   5     ORG 0030H;
+0030 758160            6     START: MOV SP,#60H;
+0033 758910            7                     MOV TMOD,#10H;
+0036 758DFC            8                     MOV TH1,#0FCH;
+0039 758B18            9                     MOV TL1,#18H;
+003C D28E             10                     SETB TR1;
+003E D2AB             11                     SETB ET1;
+0040 D2AF             12                     SETB EA;
+0042 0142             13     MAIN: AJMP      MAIN
+0044 B290             14     T1INT: CPL P1.0;
+0046 758DFC           15                     MOV TH1,#0FCH;
+0049 758B18           16                     MOV TL1,#18H;
+004C 32               17                     RETI;
+*** WARNING #A41 IN 17 (timer.asm, LINE 17): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  TIMER                                                                10/24/2019 01:18:23 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+MAIN . . . . . . .  C ADDR   0042H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START. . . . . . .  C ADDR   0030H   A   
+T1INT. . . . . . .  C ADDR   0044H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

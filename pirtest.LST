@@ -1,0 +1,135 @@
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 13:12:08 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN pirtest.OBJ
+ASSEMBLER INVOKED BY: E:\Program Files\C51\BIN\A51.EXE pirtest.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0060                 1     LOOPTIME EQU 60H;
+                       2     
+                       3     
+0000                   4     ORG 0000H;
+0000 0160              5     AJMP MAIN;
+001B                   6     ORG 001BH;T0溢出中断入口地址
+001B 019B              7     AJMP DELAY;
+0060                   8     ORG 0060H;
+                       9     ;!!!!JNZ需要更改 JNZ 是为了测试
+                      10     
+0060                  11     MAIN:
+0060 756000           12     MOV 60H,#00H;
+0063 7590FF           13         MOV P1,#0FFH;
+0066 75A0FF           14         MOV P2,#0FFH;
+0069 E5A0             15             MOV A,P2;
+006B 5407             16         ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
+006D FF               17         MOV R7,A;暂存
+006E 700B             18         JNZ LIGHT;
+0070 5405             19         ANL A,#05H;如果不是0则截取出三位，与101，如果为0说明为2；点亮
+0072 7007             20         JNZ LIGHT;
+0074 EF               21         MOV A,R7;如果不是0 恢复A里面的数据
+0075 5403             22         ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
+0077 7002             23         JNZ LIGHT;
+0079 0160             24         AJMP MAIN;
+                      25     
+007B                  26     LIGHT:
+007B B290             27         CPL P1.0;
+007D 00               28         NOP;
+007E 00               29             NOP;
+007F 7401             30         MOV A,#1;
+0081 9000D7           31         MOV DPTR,#TIMETAB;
+0084 93               32         MOVC A,@A+DPTR;
+0085 FD               33         MOV R5,A;
+0086                  34     LIGHTTIME:
+0086 120095           35         LCALL DELAY1S;
+0089 B291             36         CPL P1.1;
+008B B290             37             CPL P1.0;
+008D DDF7             38         DJNZ R5,LIGHTTIME;
+008F B290             39             CPL P1.0;
+0091 B290             40         CPL P1.0;
+0093 0160             41         AJMP MAIN;
+                      42     
+                      43     
+                      44     
+                      45     ;延时1s子程序
+0095                  46     DELAY1S:
+0095 C0D0             47         PUSH PSW;
+0097 C0E0             48         PUSH ACC;
+0099 01BE             49         AJMP DELAY50MS;
+009B                  50     DELAY:
+009B C0D0             51         PUSH PSW;
+009D C0E0             52         PUSH ACC;
+009F AE60             53         MOV R6,60H;
+00A1 0E               54         INC R6;
+00A2 8E60             55         MOV 60H,R6;
+00A4 758CFF           56         MOV TH0,#0FFH;加一计数器高字节
+00A7 758AFD           57         MOV TL0,#0FDH;加一计数器低字节
+00AA BE1410           58         CJNE R6,#14H,BREAK;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 13:12:08 PAGE     2
+
+00AD C2AB             59             CLR ET1;
+00AF C28E             60         CLR TR1;
+00B1 C2AF             61         CLR EA;
+00B3 758900           62         MOV TMOD,#00H;
+00B6 756000           63             MOV 60H,#00H;
+00B9 D0E0             64         POP ACC;
+00BB D0D0             65         POP PSW;
+00BD                  66     BREAK:
+00BD 32               67             RETI;
+                      68     
+                      69     ;延时50ms子程序 65536-50000=15536=1B5E
+00BE                  70     DELAY50MS:
+00BE 758910           71         MOV TMOD,#10H;计数器0工作于方式1
+00C1 758CFF           72         MOV TH0,#0FFH;加一计数器高字节
+00C4 758AFD           73         MOV TL0,#0FDH;加一计数器低字节
+00C7 D28E             74         SETB TR1;
+00C9 D2AB             75         SETB ET1;
+00CB D2AF             76         SETB EA;
+00CD                  77     TIMEOUT:  
+00CD AE60             78         MOV R6,60H;
+00CF BE14FB           79         CJNE R6,#14H,TIMEOUT;
+                      80             ;AJMP LIGHT;
+00D2 D0E0             81         POP ACC;
+00D4 D0D0             82         POP PSW;
+00D6 22               83         RET;
+                      84     
+                      85     
+00D7                  86     TIMETAB:
+00D7 000A             87         DW 0AH,14H,1EH;定义灯亮的秒数10，20，30s
+00D9 0014                    
+00DB 001E                    
+                      88     END;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/24/2019 13:12:08 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+BREAK. . . . . . .  C ADDR   00BDH   A   
+DELAY. . . . . . .  C ADDR   009BH   A   
+DELAY1S. . . . . .  C ADDR   0095H   A   
+DELAY50MS. . . . .  C ADDR   00BEH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+LIGHT. . . . . . .  C ADDR   007BH   A   
+LIGHTTIME. . . . .  C ADDR   0086H   A   
+LOOPTIME . . . . .  N NUMB   0060H   A   
+MAIN . . . . . . .  C ADDR   0060H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMEOUT. . . . . .  C ADDR   00CDH   A   
+TIMETAB. . . . . .  C ADDR   00D7H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

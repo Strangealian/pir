@@ -1,0 +1,10 @@
+ORG 0000H;
+AJMP MAIN;
+ORG 0060H;
+MAIN:
+    MOV P2, #0FFH;
+	MOV P1, #0FFH;
+    MOV A,P2;
+    MOV P1,A;
+    AJMP MAIN;
+END;

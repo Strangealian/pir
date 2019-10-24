@@ -1,0 +1,117 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    10/24/2019  13:12:08  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+E:\PROGRAM FILES\C51\BIN\BL51.EXE pirtest.obj TO pir
+
+
+INPUT MODULES INCLUDED:
+  pirtest.obj (PIRTEST)
+
+
+LINK MAP OF MODULE:  pir (PIRTEST)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     00DDH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  pir (PIRTEST)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PIRTEST
+  D:00E0H         SYMBOL        ACC
+  C:00BDH         SYMBOL        BREAK
+  C:009BH         SYMBOL        DELAY
+  C:0095H         SYMBOL        DELAY1S
+  C:00BEH         SYMBOL        DELAY50MS
+  B:00A8H.7       SYMBOL        EA
+  B:00A8H.3       SYMBOL        ET1
+  C:007BH         SYMBOL        LIGHT
+  C:0086H         SYMBOL        LIGHTTIME
+  N:0060H         SYMBOL        LOOPTIME
+  C:0060H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  D:00D0H         SYMBOL        PSW
+  D:008CH         SYMBOL        TH0
+  C:00CDH         SYMBOL        TIMEOUT
+  C:00D7H         SYMBOL        TIMETAB
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.6       SYMBOL        TR1
+  C:0000H         LINE#         5
+  C:001BH         LINE#         7
+  C:0060H         LINE#         12
+  C:0063H         LINE#         13
+  C:0066H         LINE#         14
+  C:0069H         LINE#         15
+  C:006BH         LINE#         16
+  C:006DH         LINE#         17
+  C:006EH         LINE#         18
+  C:0070H         LINE#         19
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  10/24/2019  13:12:08  PAGE 2
+
+
+  C:0072H         LINE#         20
+  C:0074H         LINE#         21
+  C:0075H         LINE#         22
+  C:0077H         LINE#         23
+  C:0079H         LINE#         24
+  C:007BH         LINE#         27
+  C:007DH         LINE#         28
+  C:007EH         LINE#         29
+  C:007FH         LINE#         30
+  C:0081H         LINE#         31
+  C:0084H         LINE#         32
+  C:0085H         LINE#         33
+  C:0086H         LINE#         35
+  C:0089H         LINE#         36
+  C:008BH         LINE#         37
+  C:008DH         LINE#         38
+  C:008FH         LINE#         39
+  C:0091H         LINE#         40
+  C:0093H         LINE#         41
+  C:0095H         LINE#         47
+  C:0097H         LINE#         48
+  C:0099H         LINE#         49
+  C:009BH         LINE#         51
+  C:009DH         LINE#         52
+  C:009FH         LINE#         53
+  C:00A1H         LINE#         54
+  C:00A2H         LINE#         55
+  C:00A4H         LINE#         56
+  C:00A7H         LINE#         57
+  C:00AAH         LINE#         58
+  C:00ADH         LINE#         59
+  C:00AFH         LINE#         60
+  C:00B1H         LINE#         61
+  C:00B3H         LINE#         62
+  C:00B6H         LINE#         63
+  C:00B9H         LINE#         64
+  C:00BBH         LINE#         65
+  C:00BDH         LINE#         67
+  C:00BEH         LINE#         71
+  C:00C1H         LINE#         72
+  C:00C4H         LINE#         73
+  C:00C7H         LINE#         74
+  C:00C9H         LINE#         75
+  C:00CBH         LINE#         76
+  C:00CDH         LINE#         78
+  C:00CFH         LINE#         79
+  C:00D2H         LINE#         81
+  C:00D4H         LINE#         82
+  C:00D6H         LINE#         83
+  -------         ENDMOD        PIRTEST
+
+Program Size: data=8.0 xdata=0 code=221
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
