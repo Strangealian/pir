@@ -347,16 +347,6 @@
           <GroupName>源组 1</GroupName>
           <Files>
             <File>
-              <FileName>timer.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\timer.asm</FilePath>
-            </File>
-            <File>
-              <FileName>ledtest.asm</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\ledtest.asm</FilePath>
-            </File>
-            <File>
               <FileName>pirtest.asm</FileName>
               <FileType>2</FileType>
               <FilePath>.\pirtest.asm</FilePath>
