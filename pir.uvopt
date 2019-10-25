@@ -206,10 +206,10 @@
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>29</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
-      <CurrentLine>3</CurrentLine>
+      <CurrentLine>13</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\pirtest.asm</PathWithFileName>
       <FilenameWithoutPath>pirtest.asm</FilenameWithoutPath>
@@ -1561,9 +1561,9 @@
       <Documents>
         <Doc>
           <Name>.\pirtest.asm</Name>
-          <ColumnNumber>29</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>3</CurrentLine>
+          <CurrentLine>13</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

@@ -4,6 +4,10 @@ INITONE EQU 03H;
 OFFSET1 EQU 59H;个位偏移地址记录
 OFFSET2 EQU 58H;十位偏移地址记录
 SETDT EQU 57H;set delay time 存放延时时间表偏移地址
+BALANCE EQU 56H;
+
+THT EQU 0D8H;
+TLT EQU 0F0H;
 
 ORG 0000H;
 AJMP MAIN;
@@ -21,7 +25,8 @@ MAIN:
     MOV 60H,#00H;
     MOV SETDT,#02H;
     MOV LOOPTAG,#00H;
-    MOV LOOPTIME,#14H;
+    MOV LOOPTIME,#05H;
+    MOV BALANCE,#0FFH;
 
     MOV P1,#0FFH;
     MOV P0,#0FFH;
@@ -72,14 +77,19 @@ DELAY:;计数器1溢出中断出口
     MOV R6,60H;
     INC R6;
     MOV 60H,R6;
-    MOV TH0,#0B1H;加一计数器高字节
-    MOV TL0,#0E0H;加一计数器低字节
+    MOV TH0,#THT;加一计数器高字节
+    MOV TL0,#TLT;加一计数器低字节
 
     
      ;点亮数码管
 NUMDIS:
    
     
+     MOV A,R6;
+     ANL A,#01H;
+     MOV BALANCE,A;
+     JNZ BAL2;
+BAL1:
     MOV R4,#0FDH;R4存放数码管位置个位
     
     ;MOV R3,A;
@@ -95,26 +105,31 @@ NUMDIS:
     SETB P2.6;
     ;MOV P0,#00H;
     MOV P0,A;
-    LCALL PWNWAT;延时1ms
-    CLR P2.6;
-
+    MOV A,BALANCE;
+    JNZ BAL3;
+    ;LCALL PWNWAT;延时1ms
+    ;LCALL PWNWAT;
+    
+BAL2:
     MOV R4,#0FEH;
    
+    MOV DPTR, #TIMETAB;
+    MOV A,R2;
+    MOVC A,@A+DPTR;
+    ;CALL PWNWAT;
+    CLR P2.6;
     SETB P2.7;
     ;MOV P0,#0FFH;
     MOV P0,R4;
     CLR P2.7;
-
-
-    MOV DPTR, #TIMETAB;
-    MOV A,R2;
-    MOVC A,@A+DPTR;
     SETB P2.6;
     ;MOV P0,#00H;
     MOV P0,A;
-    LCALL PWNWAT;
-
-    CJNE R6,#14H,BREAK;
+    MOV A,BALANCE;
+    JNZ BAL1;
+    ;LCALL PWNWAT;
+BAL3:
+    CJNE R6,#64H,BREAK;
     CLR P2.6;
 	CLR ET1;
     CLR TR1;
@@ -135,8 +150,8 @@ DELAY1S:
 ;延时50ms子程序 65536-50000=15536=3CB0
 DELAY50MS:
     MOV TMOD,#01H;计数器1工作于方式1
-    MOV TH0,#0B1H;加一计数器高字节
-    MOV TL0,#0E0H;加一计数器低字节
+    MOV TH0,#THT;加一计数器高字节
+    MOV TL0,#TLT;加一计数器低字节
     SETB EA;
     SETB TR0;
     SETB ET0;
@@ -146,7 +161,7 @@ TIMEOUT:
 
     MOV R6,60H;
 
-    CJNE R6,#14H,TIMEOUT;
+    CJNE R6,#64H,TIMEOUT;
 	;AJMP LIGHT;
     MOV 60H,#00H;
     POP ACC;
@@ -157,12 +172,13 @@ PWNWAT: ;power on wait
     PUSH PSW;
     PUSH ACC;
     SETB RS0;
-    MOV R1,#120;
-    MOV R2,#80;
+    MOV R1,#40;
+    MOV R2,#10;
 PW1:
     NOP;
     NOP;
     DJNZ R1,PW1;
+    MOV R1,#40;
     DJNZ R2,PW1;
     POP ACC;
     POP PSW;

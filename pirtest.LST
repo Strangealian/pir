@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 12:52:17 PAGE     1
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 20:00:32 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -13,185 +13,203 @@ LOC  OBJ            LINE     SOURCE
   0059                 4     OFFSET1 EQU 59H;个位偏移地址记录
   0058                 5     OFFSET2 EQU 58H;十位偏移地址记录
   0057                 6     SETDT EQU 57H;set delay time 存放延时时间表偏移地址
-                       7     
-0000                   8     ORG 0000H;
-0000 0160              9     AJMP MAIN;
-000B                  10     ORG 000BH;T0溢出中断入口地址
-000B 01B9             11     AJMP DELAY;
-0060                  12     ORG 0060H;
-                      13     ;!!!!JNZ需要更改 JNZ 是为了测试
-                      14     
-                      15     
-0060                  16     MAIN:
-0060 758160           17         MOV SP,#60H;
-0063 750302           18         MOV INITONE,#02H;
-0066 755903           19         MOV OFFSET1,#03H;
-0069 75580A           20         MOV OFFSET2,#0AH;
-006C 756000           21         MOV 60H,#00H;
-006F 755702           22         MOV SETDT,#02H;
-0072 756000           23         MOV LOOPTAG,#00H;
-0075 755614           24         MOV LOOPTIME,#14H;
-                      25     
-0078 7590FF           26         MOV P1,#0FFH;
-007B 7580FF           27         MOV P0,#0FFH;
-007E 75A0FF           28         MOV P2,#0FFH;
-0081 E5A0             29             MOV A,P2;
-0083 5407             30         ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
-0085 FF               31         MOV R7,A;暂存
-0086 700B             32         JNZ LIGHT;
-0088 5405             33         ANL A,#05H;如果不是0则截取出三位，与101，如果为0说明为2；点亮
-008A 7007             34         JNZ LIGHT;
-008C EF               35         MOV A,R7;如果不是0 恢复A里面的数据
-008D 5403             36         ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
-008F 7002             37         JNZ LIGHT;
-0091 0160             38         AJMP MAIN;
-                      39     
-0093                  40     LIGHT:
-0093 B290             41         CPL P1.0;
-0095 00               42         NOP;
-0096 00               43             NOP;
-0097 E557             44         MOV A,SETDT;
-0099 90013E           45         MOV DPTR,#TIMETAB;
-009C 93               46         MOVC A,@A+DPTR;
-009D FD               47         MOV R5,A;R5存放的数据为灯亮的秒数，通过查表得到
-009E AA58             48         MOV R2,OFFSET2;存放数码管十位对应偏移地址
-00A0 AB59             49         MOV R3,OFFSET1;存放数码管个位对应偏移地址
-00A2                  50     LIGHTTIME:
-                      51         
-00A2 120107           52         LCALL DELAY1S;延时1s后数码管显示相应数字
-00A5 0B               53         INC R3;
-00A6 E559             54         MOV A,OFFSET1;
-00A8 240A             55         ADD A,#10;
-00AA B50301           56         CJNE A,03H,CFG;
-00AD 0A               57         INC R2;
-00AE                  58     CFG:
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 12:52:17 PAGE     2
+  0056                 7     BALANCE EQU 56H;
+                       8     
+  00D8                 9     THT EQU 0D8H;
+  00F0                10     TLT EQU 0F0H;
+                      11     
+0000                  12     ORG 0000H;
+0000 0160             13     AJMP MAIN;
+000B                  14     ORG 000BH;T0溢出中断入口地址
+000B 01BC             15     AJMP DELAY;
+0060                  16     ORG 0060H;
+                      17     ;!!!!JNZ需要更改 JNZ 是为了测试
+                      18     
+                      19     
+0060                  20     MAIN:
+0060 758160           21         MOV SP,#60H;
+0063 750302           22         MOV INITONE,#02H;
+0066 755903           23         MOV OFFSET1,#03H;
+0069 75580A           24         MOV OFFSET2,#0AH;
+006C 756000           25         MOV 60H,#00H;
+006F 755702           26         MOV SETDT,#02H;
+0072 756000           27         MOV LOOPTAG,#00H;
+0075 755605           28         MOV LOOPTIME,#05H;
+0078 7556FF           29         MOV BALANCE,#0FFH;
+                      30     
+007B 7590FF           31         MOV P1,#0FFH;
+007E 7580FF           32         MOV P0,#0FFH;
+0081 75A0FF           33         MOV P2,#0FFH;
+0084 E5A0             34             MOV A,P2;
+0086 5407             35         ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
+0088 FF               36         MOV R7,A;暂存
+0089 700B             37         JNZ LIGHT;
+008B 5405             38         ANL A,#05H;如果不是0则截取出三位，与101，如果为0说明为2；点亮
+008D 7007             39         JNZ LIGHT;
+008F EF               40         MOV A,R7;如果不是0 恢复A里面的数据
+0090 5403             41         ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
+0092 7002             42         JNZ LIGHT;
+0094 0160             43         AJMP MAIN;
+                      44     
+0096                  45     LIGHT:
+0096 B290             46         CPL P1.0;
+0098 00               47         NOP;
+0099 00               48             NOP;
+009A E557             49         MOV A,SETDT;
+009C 90014C           50         MOV DPTR,#TIMETAB;
+009F 93               51         MOVC A,@A+DPTR;
+00A0 FD               52         MOV R5,A;R5存放的数据为灯亮的秒数，通过查表得到
+00A1 AA58             53         MOV R2,OFFSET2;存放数码管十位对应偏移地址
+00A3 AB59             54         MOV R3,OFFSET1;存放数码管个位对应偏移地址
+00A5                  55     LIGHTTIME:
+                      56         
+00A5 120113           57         LCALL DELAY1S;延时1s后数码管显示相应数字
+00A8 0B               58         INC R3;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 20:00:32 PAGE     2
 
-00AE BB0D02           59         CJNE R3,#0DH,ASGTO;
-00B1 7B03             60         MOV R3,#03H;
-00B3                  61     ASGTO:
-00B3 DDED             62         DJNZ R5,LIGHTTIME;
-00B5 B290             63             CPL P1.0;
-00B7 0160             64         AJMP MAIN;
-                      65     
-                      66     
-                      67     
-                      68     
-00B9                  69     DELAY:;计数器1溢出中断出口
-00B9 C0D0             70         PUSH PSW;
-00BB C0E0             71         PUSH ACC;
-00BD AE60             72         MOV R6,60H;
-00BF 0E               73         INC R6;
-00C0 8E60             74         MOV 60H,R6;
-00C2 758CB1           75         MOV TH0,#0B1H;加一计数器高字节
-00C5 758AE0           76         MOV TL0,#0E0H;加一计数器低字节
-                      77     
-                      78         
-                      79          ;点亮数码管
-00C8                  80     NUMDIS:
-                      81        
-                      82         
-00C8 7CFD             83         MOV R4,#0FDH;R4存放数码管位置个位
-                      84         
-                      85         ;MOV R3,A;
-00CA C2A6             86         CLR P2.6;位选选中个位
-00CC D2A7             87         SETB P2.7;
-                      88         ;MOV P0,#0FFH;
-00CE 8C80             89         MOV P0,R4;
-00D0 C2A7             90         CLR P2.7;
-                      91     
-00D2 90013E           92         MOV DPTR,#TIMETAB;
-00D5 EB               93         MOV A,R3;
-00D6 93               94         MOVC A,@A+DPTR;查表得到相应数字对应值
-00D7 D2A6             95         SETB P2.6;
-                      96         ;MOV P0,#00H;
-00D9 F580             97         MOV P0,A;
-00DB 120129           98         LCALL PWNWAT;延时1ms
-00DE C2A6             99         CLR P2.6;
-                     100     
-00E0 7CFE            101         MOV R4,#0FEH;
-                     102        
-00E2 D2A7            103         SETB P2.7;
-                     104         ;MOV P0,#0FFH;
-00E4 8C80            105         MOV P0,R4;
-00E6 C2A7            106         CLR P2.7;
-                     107     
-                     108     
-00E8 90013E          109         MOV DPTR, #TIMETAB;
-00EB EA              110         MOV A,R2;
-00EC 93              111         MOVC A,@A+DPTR;
-00ED D2A6            112         SETB P2.6;
-                     113         ;MOV P0,#00H;
-00EF F580            114         MOV P0,A;
-00F1 120129          115         LCALL PWNWAT;
-                     116     
-00F4 BE140B          117         CJNE R6,#14H,BREAK;
-00F7 C2A6            118         CLR P2.6;
-00F9 C2AB            119             CLR ET1;
-00FB C28E            120         CLR TR1;
-00FD C2AF            121         CLR EA;
-00FF 758900          122         MOV TMOD,#00H;
-                     123             ;MOV 60H,#00H;
-                     124         
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 12:52:17 PAGE     3
+00A9 E559             59         MOV A,OFFSET1;
+00AB 240A             60         ADD A,#10;
+00AD B50301           61         CJNE A,03H,CFG;
+00B0 0A               62         INC R2;
+00B1                  63     CFG:
+00B1 BB0D02           64         CJNE R3,#0DH,ASGTO;
+00B4 7B03             65         MOV R3,#03H;
+00B6                  66     ASGTO:
+00B6 DDED             67         DJNZ R5,LIGHTTIME;
+00B8 B290             68             CPL P1.0;
+00BA 0160             69         AJMP MAIN;
+                      70     
+                      71     
+                      72     
+                      73     
+00BC                  74     DELAY:;计数器1溢出中断出口
+00BC C0D0             75         PUSH PSW;
+00BE C0E0             76         PUSH ACC;
+00C0 AE60             77         MOV R6,60H;
+00C2 0E               78         INC R6;
+00C3 8E60             79         MOV 60H,R6;
+00C5 758CD8           80         MOV TH0,#THT;加一计数器高字节
+00C8 758AF0           81         MOV TL0,#TLT;加一计数器低字节
+                      82     
+                      83         
+                      84          ;点亮数码管
+00CB                  85     NUMDIS:
+                      86        
+                      87         
+00CB EE               88          MOV A,R6;
+00CC 5401             89          ANL A,#01H;
+00CE F556             90          MOV BALANCE,A;
+00D0 7017             91          JNZ BAL2;
+00D2                  92     BAL1:
+00D2 7CFD             93         MOV R4,#0FDH;R4存放数码管位置个位
+                      94         
+                      95         ;MOV R3,A;
+00D4 C2A6             96         CLR P2.6;位选选中个位
+00D6 D2A7             97         SETB P2.7;
+                      98         ;MOV P0,#0FFH;
+00D8 8C80             99         MOV P0,R4;
+00DA C2A7            100         CLR P2.7;
+                     101     
+00DC 90014C          102         MOV DPTR,#TIMETAB;
+00DF EB              103         MOV A,R3;
+00E0 93              104         MOVC A,@A+DPTR;查表得到相应数字对应值
+00E1 D2A6            105         SETB P2.6;
+                     106         ;MOV P0,#00H;
+00E3 F580            107         MOV P0,A;
+00E5 E556            108         MOV A,BALANCE;
+00E7 7017            109         JNZ BAL3;
+                     110         ;LCALL PWNWAT;延时1ms
+                     111         ;LCALL PWNWAT;
+                     112         
+00E9                 113     BAL2:
+00E9 7CFE            114         MOV R4,#0FEH;
+                     115        
+00EB 90014C          116         MOV DPTR, #TIMETAB;
+00EE EA              117         MOV A,R2;
+00EF 93              118         MOVC A,@A+DPTR;
+                     119         ;CALL PWNWAT;
+00F0 C2A6            120         CLR P2.6;
+00F2 D2A7            121         SETB P2.7;
+                     122         ;MOV P0,#0FFH;
+00F4 8C80            123         MOV P0,R4;
+00F6 C2A7            124         CLR P2.7;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 20:00:32 PAGE     3
 
-0102                 125     BREAK:
-0102 D0E0            126             POP ACC;
-0104 D0D0            127         POP PSW;
-0106 32              128             RETI;
-                     129     
-                     130     ;延时1s子程序
-0107                 131     DELAY1S:
-0107 C0D0            132         PUSH PSW;
-0109 C0E0            133         PUSH ACC;
-010B 210D            134         AJMP DELAY50MS;
-                     135     ;延时50ms子程序 65536-50000=15536=3CB0
-010D                 136     DELAY50MS:
-010D 758901          137         MOV TMOD,#01H;计数器1工作于方式1
-0110 758CB1          138         MOV TH0,#0B1H;加一计数器高字节
-0113 758AE0          139         MOV TL0,#0E0H;加一计数器低字节
-0116 D2AF            140         SETB EA;
-0118 D28C            141         SETB TR0;
-011A D2A9            142         SETB ET0;
-                     143         
-011C                 144     TIMEOUT:  
-                     145       
-                     146     
-011C AE60            147         MOV R6,60H;
-                     148     
-011E BE14FB          149         CJNE R6,#14H,TIMEOUT;
-                     150             ;AJMP LIGHT;
-0121 756000          151         MOV 60H,#00H;
-0124 D0E0            152         POP ACC;
-0126 D0D0            153         POP PSW;
-0128 22              154         RET;
-                     155     
-0129                 156     PWNWAT: ;power on wait
-0129 C0D0            157         PUSH PSW;
-012B C0E0            158         PUSH ACC;
-012D D2D3            159         SETB RS0;
-012F 7978            160         MOV R1,#120;
-0131 7A50            161         MOV R2,#80;
-0133                 162     PW1:
-0133 00              163         NOP;
-0134 00              164         NOP;
-0135 D9FC            165         DJNZ R1,PW1;
-0137 DAFA            166         DJNZ R2,PW1;
-0139 D0E0            167         POP ACC;
-013B D0D0            168         POP PSW;
-013D 22              169         RET;
+00F8 D2A6            125         SETB P2.6;
+                     126         ;MOV P0,#00H;
+00FA F580            127         MOV P0,A;
+00FC E556            128         MOV A,BALANCE;
+00FE 70D2            129         JNZ BAL1;
+                     130         ;LCALL PWNWAT;
+0100                 131     BAL3:
+0100 BE640B          132         CJNE R6,#64H,BREAK;
+0103 C2A6            133         CLR P2.6;
+0105 C2AB            134             CLR ET1;
+0107 C28E            135         CLR TR1;
+0109 C2AF            136         CLR EA;
+010B 758900          137         MOV TMOD,#00H;
+                     138             ;MOV 60H,#00H;
+                     139         
+010E                 140     BREAK:
+010E D0E0            141             POP ACC;
+0110 D0D0            142         POP PSW;
+0112 32              143             RETI;
+                     144     
+                     145     ;延时1s子程序
+0113                 146     DELAY1S:
+0113 C0D0            147         PUSH PSW;
+0115 C0E0            148         PUSH ACC;
+0117 2119            149         AJMP DELAY50MS;
+                     150     ;延时50ms子程序 65536-50000=15536=3CB0
+0119                 151     DELAY50MS:
+0119 758901          152         MOV TMOD,#01H;计数器1工作于方式1
+011C 758CD8          153         MOV TH0,#THT;加一计数器高字节
+011F 758AF0          154         MOV TL0,#TLT;加一计数器低字节
+0122 D2AF            155         SETB EA;
+0124 D28C            156         SETB TR0;
+0126 D2A9            157         SETB ET0;
+                     158         
+0128                 159     TIMEOUT:  
+                     160       
+                     161     
+0128 AE60            162         MOV R6,60H;
+                     163     
+012A BE64FB          164         CJNE R6,#64H,TIMEOUT;
+                     165             ;AJMP LIGHT;
+012D 756000          166         MOV 60H,#00H;
+0130 D0E0            167         POP ACC;
+0132 D0D0            168         POP PSW;
+0134 22              169         RET;
                      170     
-                     171     
-013E                 172     TIMETAB:
-013E 0A141E          173         DB 0AH,14H,1EH;定义灯亮的秒数10，20，30s
-                     174         ;DB 3FH,06H,5BH,4FH;
-                     175         ;DB 66H,6DH,7DH,07H;
-                     176         ;DB 7FH,6FH;
-0141 6F7F077D        177         DB 6FH,7FH,07H,7DH;
-0145 6D664F5B        178         DB 6DH,66H,4FH,5BH;
-0149 063F            179         DB 06H,3FH;
-                     180     END;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 12:52:17 PAGE     4
+0135                 171     PWNWAT: ;power on wait
+0135 C0D0            172         PUSH PSW;
+0137 C0E0            173         PUSH ACC;
+0139 D2D3            174         SETB RS0;
+013B 7928            175         MOV R1,#40;
+013D 7A0A            176         MOV R2,#10;
+013F                 177     PW1:
+013F 00              178         NOP;
+0140 00              179         NOP;
+0141 D9FC            180         DJNZ R1,PW1;
+0143 7928            181         MOV R1,#40;
+0145 DAF8            182         DJNZ R2,PW1;
+0147 D0E0            183         POP ACC;
+0149 D0D0            184         POP PSW;
+014B 22              185         RET;
+                     186     
+                     187     
+014C                 188     TIMETAB:
+014C 0A141E          189         DB 0AH,14H,1EH;定义灯亮的秒数10，20，30s
+                     190         ;DB 3FH,06H,5BH,4FH;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 20:00:32 PAGE     4
+
+                     191         ;DB 66H,6DH,7DH,07H;
+                     192         ;DB 7FH,6FH;
+014F 6F7F077D        193         DB 6FH,7FH,07H,7DH;
+0153 6D664F5B        194         DB 6DH,66H,4FH,5BH;
+0157 063F            195         DB 06H,3FH;
+                     196     END;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/25/2019 20:00:32 PAGE     5
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -200,37 +218,43 @@ SYMBOL TABLE LISTING
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
 ACC. . . . . . . .  D ADDR   00E0H   A   
-ASGTO. . . . . . .  C ADDR   00B3H   A   
-BREAK. . . . . . .  C ADDR   0102H   A   
-CFG. . . . . . . .  C ADDR   00AEH   A   
-DELAY. . . . . . .  C ADDR   00B9H   A   
-DELAY1S. . . . . .  C ADDR   0107H   A   
-DELAY50MS. . . . .  C ADDR   010DH   A   
+ASGTO. . . . . . .  C ADDR   00B6H   A   
+BAL1 . . . . . . .  C ADDR   00D2H   A   
+BAL2 . . . . . . .  C ADDR   00E9H   A   
+BAL3 . . . . . . .  C ADDR   0100H   A   
+BALANCE. . . . . .  N NUMB   0056H   A   
+BREAK. . . . . . .  C ADDR   010EH   A   
+CFG. . . . . . . .  C ADDR   00B1H   A   
+DELAY. . . . . . .  C ADDR   00BCH   A   
+DELAY1S. . . . . .  C ADDR   0113H   A   
+DELAY50MS. . . . .  C ADDR   0119H   A   
 EA . . . . . . . .  B ADDR   00A8H.7 A   
 ET0. . . . . . . .  B ADDR   00A8H.1 A   
 ET1. . . . . . . .  B ADDR   00A8H.3 A   
 INITONE. . . . . .  N NUMB   0003H   A   
-LIGHT. . . . . . .  C ADDR   0093H   A   
-LIGHTTIME. . . . .  C ADDR   00A2H   A   
+LIGHT. . . . . . .  C ADDR   0096H   A   
+LIGHTTIME. . . . .  C ADDR   00A5H   A   
 LOOPTAG. . . . . .  N NUMB   0060H   A   
 LOOPTIME . . . . .  N NUMB   0056H   A   
 MAIN . . . . . . .  C ADDR   0060H   A   
-NUMDIS . . . . . .  C ADDR   00C8H   A   
+NUMDIS . . . . . .  C ADDR   00CBH   A   
 OFFSET1. . . . . .  N NUMB   0059H   A   
 OFFSET2. . . . . .  N NUMB   0058H   A   
 P0 . . . . . . . .  D ADDR   0080H   A   
 P1 . . . . . . . .  D ADDR   0090H   A   
 P2 . . . . . . . .  D ADDR   00A0H   A   
 PSW. . . . . . . .  D ADDR   00D0H   A   
-PW1. . . . . . . .  C ADDR   0133H   A   
-PWNWAT . . . . . .  C ADDR   0129H   A   
+PW1. . . . . . . .  C ADDR   013FH   A   
+PWNWAT . . . . . .  C ADDR   0135H   A   
 RS0. . . . . . . .  B ADDR   00D0H.3 A   
 SETDT. . . . . . .  N NUMB   0057H   A   
 SP . . . . . . . .  D ADDR   0081H   A   
 TH0. . . . . . . .  D ADDR   008CH   A   
-TIMEOUT. . . . . .  C ADDR   011CH   A   
-TIMETAB. . . . . .  C ADDR   013EH   A   
+THT. . . . . . . .  N NUMB   00D8H   A   
+TIMEOUT. . . . . .  C ADDR   0128H   A   
+TIMETAB. . . . . .  C ADDR   014CH   A   
 TL0. . . . . . . .  D ADDR   008AH   A   
+TLT. . . . . . . .  N NUMB   00F0H   A   
 TMOD . . . . . . .  D ADDR   0089H   A   
 TR0. . . . . . . .  B ADDR   0088H.4 A   
 TR1. . . . . . . .  B ADDR   0088H.6 A   

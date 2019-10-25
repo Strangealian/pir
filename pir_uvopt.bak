@@ -25,7 +25,7 @@
     <ToolsetNumber>0x0</ToolsetNumber>
     <ToolsetName>MCS-51</ToolsetName>
     <TargetOption>
-      <CLK51>40000000</CLK51>
+      <CLK51>12000000</CLK51>
       <OPTTT>
         <gFlags>1</gFlags>
         <BeepAtEnd>1</BeepAtEnd>
@@ -134,7 +134,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>MON51</Key>
-          <Name>-S3 -B9600 -O15</Name>
+          <Name>-S3 -B28800 -O15</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,6 +157,11 @@
           <count>2</count>
           <WinNumber>1</WinNumber>
           <ItemText>R5</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ET0</ItemText>
         </Ww>
       </WatchWindow1>
       <DebugFlag>
@@ -182,7 +187,7 @@
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
         <TrcWin>0</TrcWin>
-        <newCpu>1</newCpu>
+        <newCpu>0</newCpu>
         <uProt>0</uProt>
       </DebugFlag>
       <LintExecutable></LintExecutable>
@@ -201,10 +206,10 @@
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>49</ColumnNumber>
+      <ColumnNumber>31</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>37</TopLine>
-      <CurrentLine>37</CurrentLine>
+      <TopLine>168</TopLine>
+      <CurrentLine>168</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\pirtest.asm</PathWithFileName>
       <FilenameWithoutPath>pirtest.asm</FilenameWithoutPath>
@@ -349,7 +354,7 @@
         <ItemNo>6</ItemNo>
         <Name>指令</Name>
         <AnchorWinID>197</AnchorWinID>
-        <AnchorWinName>编译输出</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -374,7 +379,7 @@
         <ItemNo>7</ItemNo>
         <Name>批量查找</Name>
         <AnchorWinID>198</AnchorWinID>
-        <AnchorWinName>指令</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -399,7 +404,7 @@
         <ItemNo>8</ItemNo>
         <Name>Browse</Name>
         <AnchorWinID>199</AnchorWinID>
-        <AnchorWinName>批量查找</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -424,7 +429,7 @@
         <ItemNo>9</ItemNo>
         <Name>UART #1</Name>
         <AnchorWinID>38007</AnchorWinID>
-        <AnchorWinName>浏览</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -449,7 +454,7 @@
         <ItemNo>10</ItemNo>
         <Name>UART #2</Name>
         <AnchorWinID>1939</AnchorWinID>
-        <AnchorWinName>UART #1</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -474,7 +479,7 @@
         <ItemNo>11</ItemNo>
         <Name>UART #3</Name>
         <AnchorWinID>1940</AnchorWinID>
-        <AnchorWinName>UART #2</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -499,7 +504,7 @@
         <ItemNo>12</ItemNo>
         <Name>UART #4</Name>
         <AnchorWinID>1941</AnchorWinID>
-        <AnchorWinName>UART #3</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -549,7 +554,7 @@
         <ItemNo>14</ItemNo>
         <Name>书籍</Name>
         <AnchorWinID>1005</AnchorWinID>
-        <AnchorWinName>工程</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -574,7 +579,7 @@
         <ItemNo>15</ItemNo>
         <Name>函数</Name>
         <AnchorWinID>109</AnchorWinID>
-        <AnchorWinName>书籍</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -599,7 +604,7 @@
         <ItemNo>16</ItemNo>
         <Name>模板</Name>
         <AnchorWinID>195</AnchorWinID>
-        <AnchorWinName>函数</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -624,7 +629,7 @@
         <ItemNo>17</ItemNo>
         <Name>寄存器</Name>
         <AnchorWinID>196</AnchorWinID>
-        <AnchorWinName>模板</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -674,7 +679,7 @@
         <ItemNo>19</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35885</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -699,7 +704,7 @@
         <ItemNo>20</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35886</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -724,7 +729,7 @@
         <ItemNo>21</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35887</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -749,7 +754,7 @@
         <ItemNo>22</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35888</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -774,7 +779,7 @@
         <ItemNo>23</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35889</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -799,7 +804,7 @@
         <ItemNo>24</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35890</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -824,7 +829,7 @@
         <ItemNo>25</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35891</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -849,7 +854,7 @@
         <ItemNo>26</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35892</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -874,7 +879,7 @@
         <ItemNo>27</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35893</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -899,7 +904,7 @@
         <ItemNo>28</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35894</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -924,7 +929,7 @@
         <ItemNo>29</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35895</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -949,7 +954,7 @@
         <ItemNo>30</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35896</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -974,7 +979,7 @@
         <ItemNo>31</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35897</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -999,7 +1004,7 @@
         <ItemNo>32</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35898</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1024,7 +1029,7 @@
         <ItemNo>33</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35899</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1049,7 +1054,7 @@
         <ItemNo>34</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35900</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1074,7 +1079,7 @@
         <ItemNo>35</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35901</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1099,7 +1104,7 @@
         <ItemNo>36</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35902</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1124,7 +1129,7 @@
         <ItemNo>37</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35903</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1149,7 +1154,7 @@
         <ItemNo>38</ItemNo>
         <Name>not set</Name>
         <AnchorWinID>35904</AnchorWinID>
-        <AnchorWinName>???</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1199,7 +1204,7 @@
         <ItemNo>40</ItemNo>
         <Name>指令跟踪</Name>
         <AnchorWinID>203</AnchorWinID>
-        <AnchorWinName>反汇编</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1224,7 +1229,7 @@
         <ItemNo>41</ItemNo>
         <Name>性能分析器</Name>
         <AnchorWinID>1913</AnchorWinID>
-        <AnchorWinName>指令跟踪</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1249,7 +1254,7 @@
         <ItemNo>42</ItemNo>
         <Name>性能分析器</Name>
         <AnchorWinID>343</AnchorWinID>
-        <AnchorWinName>性能分析器</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1274,7 +1279,7 @@
         <ItemNo>43</ItemNo>
         <Name>代码作用范围</Name>
         <AnchorWinID>204</AnchorWinID>
-        <AnchorWinName>性能分析器</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1310,10 +1315,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1324,7 +1329,7 @@
         <ItemNo>45</ItemNo>
         <Name>调用堆栈</Name>
         <AnchorWinID>1944</AnchorWinID>
-        <AnchorWinName>调用堆栈</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1335,10 +1340,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1349,7 +1354,7 @@
         <ItemNo>46</ItemNo>
         <Name>Locals</Name>
         <AnchorWinID>1507</AnchorWinID>
-        <AnchorWinName>调用堆栈</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1360,10 +1365,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1374,7 +1379,7 @@
         <ItemNo>47</ItemNo>
         <Name>Watch 1</Name>
         <AnchorWinID>1935</AnchorWinID>
-        <AnchorWinName>Locals</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1385,10 +1390,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1399,7 +1404,7 @@
         <ItemNo>48</ItemNo>
         <Name>Watch 2</Name>
         <AnchorWinID>1936</AnchorWinID>
-        <AnchorWinName>Watch 1</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1410,10 +1415,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1424,7 +1429,7 @@
         <ItemNo>49</ItemNo>
         <Name>Memory 1</Name>
         <AnchorWinID>1937</AnchorWinID>
-        <AnchorWinName>Watch 2</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1435,10 +1440,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1449,7 +1454,7 @@
         <ItemNo>50</ItemNo>
         <Name>Memory 2</Name>
         <AnchorWinID>1465</AnchorWinID>
-        <AnchorWinName>Memory 1</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1460,10 +1465,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1474,7 +1479,7 @@
         <ItemNo>51</ItemNo>
         <Name>Memory 3</Name>
         <AnchorWinID>1466</AnchorWinID>
-        <AnchorWinName>Memory 2</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1485,10 +1490,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1499,7 +1504,7 @@
         <ItemNo>52</ItemNo>
         <Name>Memory 4</Name>
         <AnchorWinID>1467</AnchorWinID>
-        <AnchorWinName>Memory 3</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1510,10 +1515,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1524,7 +1529,7 @@
         <ItemNo>53</ItemNo>
         <Name>符号</Name>
         <AnchorWinID>1468</AnchorWinID>
-        <AnchorWinName>Memory 4</AnchorWinName>
+        <AnchorWinName></AnchorWinName>
         <OtherWinID>0</OtherWinID>
         <OtherWinName></OtherWinName>
         <WinType>1</WinType>
@@ -1535,10 +1540,10 @@
         <DockedRect_left>770</DockedRect_left>
         <DockedRect_bottom>822</DockedRect_bottom>
         <DockedRect_right>1536</DockedRect_right>
-        <FloatingRect_top>174</FloatingRect_top>
-        <FloatingRect_left>794</FloatingRect_left>
-        <FloatingRect_bottom>774</FloatingRect_bottom>
-        <FloatingRect_right>1161</FloatingRect_right>
+        <FloatingRect_top>179</FloatingRect_top>
+        <FloatingRect_left>1114</FloatingRect_left>
+        <FloatingRect_bottom>779</FloatingRect_bottom>
+        <FloatingRect_right>1481</FloatingRect_right>
         <ContainerPercent>100</ContainerPercent>
         <ActiveTab>0</ActiveTab>
         <Visible>0</Visible>
@@ -1556,9 +1561,9 @@
       <Documents>
         <Doc>
           <Name>.\pirtest.asm</Name>
-          <ColumnNumber>49</ColumnNumber>
-          <TopLine>37</TopLine>
-          <CurrentLine>37</CurrentLine>
+          <ColumnNumber>31</ColumnNumber>
+          <TopLine>168</TopLine>
+          <CurrentLine>168</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
