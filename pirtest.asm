@@ -1,5 +1,9 @@
-LOOPTIME EQU 60H;
+LOOPTAG EQU 60H;
+LOOPTIME EQU 56H;
 INITONE EQU 03H;
+OFFSET1 EQU 59H;个位偏移地址记录
+OFFSET2 EQU 58H;十位偏移地址记录
+SETDT EQU 57H;set delay time 存放延时时间表偏移地址
 
 ORG 0000H;
 AJMP MAIN;
@@ -8,8 +12,17 @@ AJMP DELAY;
 ORG 0060H;
 ;!!!!JNZ需要更改 JNZ 是为了测试
 
+
 MAIN:
-MOV 60H,#00H;
+    MOV SP,#60H;
+    MOV INITONE,#02H;
+    MOV OFFSET1,#03H;
+    MOV OFFSET2,#0AH;
+    MOV 60H,#00H;
+    MOV SETDT,#02H;
+    MOV LOOPTAG,#00H;
+    MOV LOOPTIME,#14H;
+
     MOV P1,#0FFH;
     MOV P0,#0FFH;
     MOV P2,#0FFH;
@@ -28,17 +41,17 @@ LIGHT:
     CPL P1.0;
     NOP;
 	NOP;
-    MOV A,#2;
+    MOV A,SETDT;
     MOV DPTR,#TIMETAB;
     MOVC A,@A+DPTR;
     MOV R5,A;R5存放的数据为灯亮的秒数，通过查表得到
-    MOV R2,#0AH;存放数码管十位对应偏移地址
-    MOV R3,#03H;存放数码管个位对应偏移地址
+    MOV R2,OFFSET2;存放数码管十位对应偏移地址
+    MOV R3,OFFSET1;存放数码管个位对应偏移地址
 LIGHTTIME:
     
     LCALL DELAY1S;延时1s后数码管显示相应数字
     INC R3;
-    MOV A,#INITONE;
+    MOV A,OFFSET1;
     ADD A,#10;
     CJNE A,03H,CFG;
     INC R2;
