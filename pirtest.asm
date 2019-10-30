@@ -1,17 +1,16 @@
 DEF:
     LOOPTAG EQU 60H;次数统计保存地址
-    LOOPTIME EQU 55H;延时循环次数保存地址
-    ;INITONE EQU 03H;数码管起始位置标记
-    OFFSET1 EQU 59H;个位偏移地址记录
-    OFFSET2 EQU 58H;十位偏移地址记录
-    SETDT EQU 57H;set delay time 存放延时时间表偏移地址
+    LOOPTIME EQU 59H;延时循环次数保存地址
+    OFFSET1 EQU 58H;个位偏移地址记录
+    OFFSET2 EQU 57H;十位偏移地址记录
     BALANCE EQU 56H;负载 均衡标记
-
+    DEFAULTDT EQU 55H;;
     THT EQU 0D8H;计数器高字节
     TLT EQU 0F0H;计数器低字节
 
-    KEYBUF1 EQU 50H;键盘读入数据十位
-    KEYBUF2 EQU 49H;键盘读入数据个位；
+    KEYBUF1 EQU 54H;键盘读入数据十位
+    KEYBUF2 EQU 53H;键盘读入数据个位；
+    KEYBUF3 EQU 52H;
 
     ORG 0000H;
     AJMP MAIN;
@@ -26,56 +25,58 @@ DEF:
 MAIN:
     MOV SP,#60H;
     
-    MOV OFFSET1,#03H;
-    MOV OFFSET2,#0AH;
-    
-    MOV SETDT,#02H;
-    MOV LOOPTAG,#00H;
+    MOV OFFSET1,#0AH;
+    MOV OFFSET2,#03H;
+    MOV DEFAULTDT,#30;
     MOV LOOPTIME,#05H;
-    MOV BALANCE,#0FFH;
 
-    MOV P1,#0FFH;p1为数据输出，点亮LED用
-    MOV P0,#0FFH;
-    MOV P3,#0FH;p3为键盘输入口
-    MOV P2,#0FFH;p2作为数据输入口
+    SETB EA;
+	SETB EX1;
+	SETB IT1;
+    /*外部中断1最高优先级*/
+    SETB PX1;
+    LOOP:
+        MOV LOOPTAG,#00H;
+        MOV BALANCE,#0FFH;
+    
+
+        MOV P1,#0FFH;p1为数据输出，点亮LED用
+        MOV P0,#0FFH;
+        MOV P3,#0FH;p3为键盘输入口
+        MOV P2,#0FFH;p2作为数据输入口
 
 
-	MOV A,P2;
-    ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
-    MOV R7,A;暂存
-    JNZ LIGHT;
-    ANL A,#05H;如果不是0则截取出三位，与101，如果为0说明为2；点亮
-    JNZ LIGHT;
-    MOV A,R7;如果不是0 恢复A里面的数据
-    ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
-    JNZ LIGHT;
-    AJMP MAIN;
+        MOV A,P2;
+        ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
+        MOV R7,A;暂存
+        JNZ LIGHT;
+        ANL A,#05H;如果不是0则截取出三位，与101，如果为0说明为2；点亮
+        JNZ LIGHT;
+        MOV A,R7;如果不是0 恢复A里面的数据
+        ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
+        JNZ LIGHT;
+        AJMP LOOP;
 
-LIGHT:
-    CPL P1.0;
-    NOP;
-	NOP;
-    MOV A,SETDT;
-    MOV DPTR,#TIMETAB;
-    MOVC A,@A+DPTR;
-    MOV R5,A;R5存放的数据为灯亮的秒数，通过查表得到
-    MOV R2,OFFSET2;存放数码管十位对应偏移地址
-    MOV R3,OFFSET1;存放数码管个位对应偏移地址
-    LIGHTTIME:
-        
-        LCALL DELAY1S;延时1s后数码管显示相应数字
-        INC R3;
-        MOV A,OFFSET1;
-        ADD A,#10;
-        CJNE A,03H,CFG;
-        INC R2;
-    CFG:
-        CJNE R3,#0DH,ASGTO;
-        MOV R3,OFFSET1;
-    ASGTO:
-        DJNZ R5,LIGHTTIME;
+    LIGHT:
         CPL P1.0;
-        AJMP MAIN;
+        NOP;
+        NOP;
+        MOV R5,DEFAULTDT;
+        MOV R2,OFFSET2;存放数码管十位对应偏移地址
+        MOV R3,OFFSET1;存放数码管个位对应偏移地址
+        LIGHTTIME:
+            LCALL DELAY1S;延时1s后数码管显示相应数字
+            DEC R3;
+            MOV A,#00H;
+            CJNE A,03H,CFG;
+            DEC R2;
+        CFG:
+            CJNE R3,#00H,ASGTO;
+            MOV R3,OFFSET1;
+        ASGTO:
+            DJNZ R5,LIGHTTIME;
+            CPL P1.0;
+            AJMP LOOP;
 
 ;延时1s子程序
 DELAY1S:
@@ -94,11 +95,10 @@ DELAY1S:
     TIMEOUT:  
     
 
-        MOV R6,60H;
+        MOV R6,LOOPTAG;
 
         CJNE R6,#64H,TIMEOUT;
-        ;AJMP LIGHT;
-        MOV 60H,#00H;
+        MOV LOOPTAG,#00H;
         POP ACC;
         POP PSW;
         RET;
@@ -110,9 +110,9 @@ DELAY1S:
 DELAY:;计数器1溢出中断出口
         PUSH PSW;
         PUSH ACC;
-        MOV R6,60H;
+        MOV R6,LOOPTAG;
         INC R6;
-        MOV 60H,R6;
+        MOV LOOPTAG,R6;
         MOV TH0,#THT;加一计数器高字节
         MOV TL0,#TLT;加一计数器低字节
 
@@ -185,7 +185,10 @@ DELAY:;计数器1溢出中断出口
 */
 KBSCN:
 
-        CPL P1.1;
+        CPL P1.7;
+        MOV KEYBUF1,#03H;
+        MOV KEYBUF2,#05H;
+        MOV DEFAULTDT,#35;
         /*进入中断等待按键释放*/
     WAT4RLS:;WAITE FOR REALSE
         MOV A,P3;
@@ -407,8 +410,8 @@ KBSCN:
 
         AJMP KBSCNR1;
     EXITSET:
-        CPL P1.0;
-        CPL P1.1;
+        CPL P1.7;
+        ;CPL P1.1;
     /*退出中断，等待键盘释放，*/
     WAT4EXIT:;WAITE FOR REALSE
         MOV A,P3;
@@ -416,10 +419,28 @@ KBSCN:
         XRL A,#0FH;
         JNZ WAT4EXIT;
 
+        /*需要设置offset1 offset2 第一组寄存器的R5，R5存放定时秒数
+        *OFFSET1为个位，offset2为十位
+        *buf2为个位，buf1为十位
+        */
+
+        MOV A,KEYBUF1;
+        MOV B,#10;
+        MUL AB;
+        ;ADD A,KEYBUF1;
+        MOV KEYBUF3,A;
 
         CLR RS0;USE THE DEFAULT SET OF REGISTERS;
         POP ACC;
         POP PSW;
+
+        ;MOV OFFSET1,KEYBUF2;
+        ;INC OFFSET1;
+        MOV OFFSET2,KEYBUF1;
+        ;INC OFFSET2
+        ;MOV R5,KEYBUF3;
+        MOV DEFAULTDT,KEYBUF3;
+
         SETB IT1;
         MOV P3,#0FH;
         RETI;
@@ -457,11 +478,10 @@ PWNWAT: ;power on wait
 
 
 TIMETAB:
-    DB 0AH,14H,1EH;定义灯亮的秒数10，20，30s
-    ;DB 3FH,06H,5BH,4FH;
-    ;DB 66H,6DH,7DH,07H;
-    ;DB 7FH,6FH;
-    DB 6FH,7FH,07H,7DH;
-    DB 6DH,66H,4FH,5BH;
-    DB 06H,3FH;
+    DB 00H,3FH,06H,5BH;
+    DB 4FH,66H,6DH,7DH;
+    DB 07H,7FH,6FH;
+    ;DB 6FH,7FH,07H,7DH;
+    ;DB 6DH,66H,4FH,5BH;
+    ;DB 06H,3FH;
 END;
