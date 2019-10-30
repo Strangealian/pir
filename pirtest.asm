@@ -1,36 +1,45 @@
-LOOPTAG EQU 60H;
-LOOPTIME EQU 56H;
-INITONE EQU 03H;
-OFFSET1 EQU 59H;个位偏移地址记录
-OFFSET2 EQU 58H;十位偏移地址记录
-SETDT EQU 57H;set delay time 存放延时时间表偏移地址
-BALANCE EQU 56H;
+DEF:
+    LOOPTAG EQU 60H;次数统计保存地址
+    LOOPTIME EQU 55H;延时循环次数保存地址
+    ;INITONE EQU 03H;数码管起始位置标记
+    OFFSET1 EQU 59H;个位偏移地址记录
+    OFFSET2 EQU 58H;十位偏移地址记录
+    SETDT EQU 57H;set delay time 存放延时时间表偏移地址
+    BALANCE EQU 56H;负载 均衡标记
 
-THT EQU 0D8H;
-TLT EQU 0F0H;
+    THT EQU 0D8H;计数器高字节
+    TLT EQU 0F0H;计数器低字节
 
-ORG 0000H;
-AJMP MAIN;
-ORG 000BH;T0溢出中断入口地址
-AJMP DELAY;
-ORG 0060H;
-;!!!!JNZ需要更改 JNZ 是为了测试
+    KEYBUF1 EQU 50H;键盘读入数据十位
+    KEYBUF2 EQU 49H;键盘读入数据个位；
+
+    ORG 0000H;
+    AJMP MAIN;
+    ORG 000BH;T0溢出中断入口地址
+    AJMP DELAY;
+    ORG 0013H;
+    AJMP KBSCN;
+    ORG 0060H;
+    ;!!!!JNZ需要更改 JNZ 是为了测试
 
 
 MAIN:
     MOV SP,#60H;
-    MOV INITONE,#02H;
+    
     MOV OFFSET1,#03H;
     MOV OFFSET2,#0AH;
-    MOV 60H,#00H;
+    
     MOV SETDT,#02H;
     MOV LOOPTAG,#00H;
     MOV LOOPTIME,#05H;
     MOV BALANCE,#0FFH;
 
-    MOV P1,#0FFH;
+    MOV P1,#0FFH;p1为数据输出，点亮LED用
     MOV P0,#0FFH;
-    MOV P2,#0FFH;
+    MOV P3,#0FH;p3为键盘输入口
+    MOV P2,#0FFH;p2作为数据输入口
+
+
 	MOV A,P2;
     ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
     MOV R7,A;暂存
@@ -52,137 +61,399 @@ LIGHT:
     MOV R5,A;R5存放的数据为灯亮的秒数，通过查表得到
     MOV R2,OFFSET2;存放数码管十位对应偏移地址
     MOV R3,OFFSET1;存放数码管个位对应偏移地址
-LIGHTTIME:
+    LIGHTTIME:
+        
+        LCALL DELAY1S;延时1s后数码管显示相应数字
+        INC R3;
+        MOV A,OFFSET1;
+        ADD A,#10;
+        CJNE A,03H,CFG;
+        INC R2;
+    CFG:
+        CJNE R3,#0DH,ASGTO;
+        MOV R3,OFFSET1;
+    ASGTO:
+        DJNZ R5,LIGHTTIME;
+        CPL P1.0;
+        AJMP MAIN;
+
+;延时1s子程序
+DELAY1S:
+        PUSH PSW;
+        PUSH ACC;
+        AJMP DELAY50MS;
+    ;延时50ms子程序 65536-50000=15536=3CB0
+    DELAY50MS:
+        MOV TMOD,#01H;计数器1工作于方式1
+        MOV TH0,#THT;加一计数器高字节
+        MOV TL0,#TLT;加一计数器低字节
+        SETB EA;
+        SETB TR0;
+        SETB ET0;
+        
+    TIMEOUT:  
     
-    LCALL DELAY1S;延时1s后数码管显示相应数字
-    INC R3;
-    MOV A,OFFSET1;
-    ADD A,#10;
-    CJNE A,03H,CFG;
-    INC R2;
-CFG:
-    CJNE R3,#0DH,ASGTO;
-    MOV R3,#03H;
-ASGTO:
-    DJNZ R5,LIGHTTIME;
-	CPL P1.0;
-    AJMP MAIN;
+
+        MOV R6,60H;
+
+        CJNE R6,#64H,TIMEOUT;
+        ;AJMP LIGHT;
+        MOV 60H,#00H;
+        POP ACC;
+        POP PSW;
+        RET;
+
 
 
 
 
 DELAY:;计数器1溢出中断出口
-    PUSH PSW;
-    PUSH ACC;
-    MOV R6,60H;
-    INC R6;
-    MOV 60H,R6;
-    MOV TH0,#THT;加一计数器高字节
-    MOV TL0,#TLT;加一计数器低字节
+        PUSH PSW;
+        PUSH ACC;
+        MOV R6,60H;
+        INC R6;
+        MOV 60H,R6;
+        MOV TH0,#THT;加一计数器高字节
+        MOV TL0,#TLT;加一计数器低字节
 
+        
+        ;点亮数码管
+    NUMDIS:
     
-     ;点亮数码管
-NUMDIS:
-   
-    
-     MOV A,R6;
-     ANL A,#01H;
-     MOV BALANCE,A;
-     JNZ BAL2;
-BAL1:
-    MOV R4,#0FDH;R4存放数码管位置个位
-    
-    ;MOV R3,A;
-    CLR P2.6;位选选中个位
-    SETB P2.7;
-    ;MOV P0,#0FFH;
-    MOV P0,R4;
-    CLR P2.7;
+        
+        MOV A,R6;
+        ANL A,#01H;
+        MOV BALANCE,A;负载均衡
+        JNZ BAL2;
+    BAL1:
+        MOV R4,#0FDH;R4存放数码管位置个位
+        
+        ;MOV R3,A;
+        CLR P2.6;位选选中个位
+        SETB P2.7;
+        ;MOV P0,#0FFH;
+        MOV P0,R4;
+        CLR P2.7;
 
-    MOV DPTR,#TIMETAB;
-    MOV A,R3;
-    MOVC A,@A+DPTR;查表得到相应数字对应值
-    SETB P2.6;
-    ;MOV P0,#00H;
-    MOV P0,A;
-    MOV A,BALANCE;
-    JNZ BAL3;
-    ;LCALL PWNWAT;延时1ms
-    ;LCALL PWNWAT;
+        MOV DPTR,#TIMETAB;
+        MOV A,R3;
+        MOVC A,@A+DPTR;查表得到相应数字对应值
+        SETB P2.6;
+        MOV P0,#00H;
+        MOV P0,A;
+        MOV A,BALANCE;
+        JNZ BAL3;
+        ;LCALL PWNWAT;延时1ms
+        ;LCALL PWNWAT;
+        
+    BAL2:
+        MOV R4,#0FEH;
     
-BAL2:
-    MOV R4,#0FEH;
-   
-    MOV DPTR, #TIMETAB;
-    MOV A,R2;
-    MOVC A,@A+DPTR;
-    ;CALL PWNWAT;
-    CLR P2.6;
-    SETB P2.7;
-    ;MOV P0,#0FFH;
-    MOV P0,R4;
-    CLR P2.7;
-    SETB P2.6;
-    ;MOV P0,#00H;
-    MOV P0,A;
-    MOV A,BALANCE;
-    JNZ BAL1;
-    ;LCALL PWNWAT;
-BAL3:
-    CJNE R6,#64H,BREAK;
-    CLR P2.6;
-	CLR ET1;
-    CLR TR1;
-    CLR EA;
-    MOV TMOD,#00H;
-	;MOV 60H,#00H;
-    
-BREAK:
-	POP ACC;
-    POP PSW;
-   	RETI;
+        MOV DPTR, #TIMETAB;
+        MOV A,R2;
+        MOVC A,@A+DPTR;
+        ;CALL PWNWAT;
+        CLR P2.6;
+        SETB P2.7;
+        ;MOV P0,#0FFH;
+        MOV P0,R4;
+        CLR P2.7;
+        SETB P2.6;
+        MOV P0,#00H;
+        MOV P0,A;
+        MOV A,BALANCE;
+        JNZ BAL1;
+        ;LCALL PWNWAT;
+    BAL3:
+        CJNE R6,#64H,BREAK;
+        CLR P2.6;
+        CLR ET1;
+        CLR TR1;
+        CLR EA;
+        MOV TMOD,#00H;
+        ;MOV 60H,#00H;
+        
+    BREAK:
+        POP ACC;
+        POP PSW;
+        RETI;
 
-;延时1s子程序
-DELAY1S:
-    PUSH PSW;
-    PUSH ACC;
-    AJMP DELAY50MS;
-;延时50ms子程序 65536-50000=15536=3CB0
-DELAY50MS:
-    MOV TMOD,#01H;计数器1工作于方式1
-    MOV TH0,#THT;加一计数器高字节
-    MOV TL0,#TLT;加一计数器低字节
-    SETB EA;
-    SETB TR0;
-    SETB ET0;
-    
-TIMEOUT:  
-  
 
-    MOV R6,60H;
 
-    CJNE R6,#64H,TIMEOUT;
-	;AJMP LIGHT;
-    MOV 60H,#00H;
-    POP ACC;
-    POP PSW;
-    RET;
+/*1号中断入口
+*键盘响应
+*/
+KBSCN:
 
+        CPL P1.1;
+        /*进入中断等待按键释放*/
+    WAT4RLS:;WAITE FOR REALSE
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JNZ WAT4RLS;
+
+
+
+        PUSH PSW;
+        PUSH ACC;
+        SETB RS0;USE THE SECOND SET OF REGISTERS;
+        CLR IT1;
+        MOV R1,#0;R1用作标志，用来标记数据应该存入哪个buf。
+    KBSCNR1:
+        MOV P3,#0FFH;
+        CLR P3.4;
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNR2;
+        CALL DELAY4KBD;
+
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNR2;
+    C11:
+        NOP;
+    C12:
+        NOP;
+    C13:
+        NOP;
+    C14:
+        NOP;
+
+    WAT4RLS1:;WAITE FOR REALSE
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JNZ WAT4RLS1;
+
+    KBSCNR2:
+        MOV P3,#0FFH;
+        CLR P3.5;
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNR3;
+        CALL DELAY4KBD;
+
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNR3;
+
+    C21:
+        CJNE A,#01H,C22;0001左上角被按下
+        CJNE R1,#0,C21BUF2;
+        MOV KEYBUF1,#07H;
+        CPL P1.0;
+        MOV R1,#1;
+        AJMP WAT4RLS2;
+    C21BUF2:
+        MOV KEYBUF2,#07H;
+        MOV R1,#0;
+        AJMP WAT4RLS2;
+    C22:
+        CJNE A,#02H,C23;
+        CJNE R1,#0,C22BUF2;
+        MOV KEYBUF1,#04H;
+        MOV R1,#1;
+        AJMP WAT4RLS2;
+    C22BUF2:
+        MOV KEYBUF2,#04H;
+        MOV R1,#0;
+        AJMP WAT4RLS2;
+    C23:
+        CJNE A,#04H,C24;
+        CJNE R1,#0,C23BUF2;
+        MOV KEYBUF1,#01H;
+        MOV R1,#1;
+        AJMP WAT4RLS2;
+    C23BUF2:
+        MOV KEYBUF2,#01H;
+        MOV R1,#0;
+        AJMP WAT4RLS2;
+    C24:
+        CJNE A,#08H,WAT4RLS2;
+        ;MOV KEYBUF1,#0FFH;
+        AJMP EXITSET;
+
+    WAT4RLS2:;WAITE FOR REALSE
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JNZ WAT4RLS2;
+
+
+
+
+    KBSCNR3:
+        MOV P3,#0FFH;
+        CLR P3.7;
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNR4;
+        CALL DELAY4KBD;
+
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNR4;
+
+    C31:
+        CJNE A,#01H,C32;0001左上角被按下
+        CJNE R1,#0,C31BUF2;
+        MOV KEYBUF1,#08H;
+        MOV R1,#1;
+        AJMP WAT4RLS3;
+    C31BUF2:
+        MOV KEYBUF2,#08H;
+        MOV R1,#0;
+        AJMP WAT4RLS3;
+    C32:
+        CJNE A,#02H,C33;
+        CJNE R1,#0,C32BUF2;
+        MOV KEYBUF1,#05H;
+        MOV R1,#1;
+        AJMP WAT4RLS3;
+    C32BUF2:
+        MOV KEYBUF2,#05H;
+        MOV R1,#0;
+        AJMP WAT4RLS3;
+    C33:
+        CJNE A,#04H,C34;
+        CJNE R1,#0,C33BUF2;
+        MOV KEYBUF1,#02H;
+        MOV R1,#1;
+        AJMP WAT4RLS3;
+    C33BUF2:
+        MOV KEYBUF2,#02H;
+        MOV R1,#0;
+        AJMP WAT4RLS3;
+    C34:
+        CJNE A,#08H,WAT4RLS2;
+        CJNE R1,#0,C34BUF2;
+        MOV KEYBUF1,#00H;
+        MOV R1,#1;
+        AJMP WAT4RLS3;
+    C34BUF2:
+        MOV KEYBUF2,#00H;
+        MOV R1,#0;
+
+    WAT4RLS3:;WAITE FOR REALSE
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JNZ WAT4RLS3;
+
+    KBSCNR4:
+        MOV P3,#0FFH;
+        CLR P3.6;
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNEND;
+        CALL DELAY4KBD;
+
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JZ KBSCNEND;
+
+    C41:
+        CJNE A,#01H,C42;0001左上角被按下
+        CJNE R1,#0,C41BUF2;
+        MOV KEYBUF1,#09H;
+        MOV R1,#1;
+        AJMP WAT4RLS4;
+    C41BUF2:
+        MOV KEYBUF2,#09H;
+        MOV R1,#0;
+        AJMP WAT4RLS4;
+    C42:
+        CJNE A,#02H,C43;
+        CJNE R1,#0,C42BUF2;
+        MOV KEYBUF1,#06H;
+        MOV R1,#1;
+        AJMP WAT4RLS4;
+    C42BUF2:
+        MOV KEYBUF2,#06H;
+        MOV R1,#0;
+        AJMP WAT4RLS4;
+    C43:
+        CJNE A,#04H,C44;
+        CJNE R1,#0,C43BUF2;
+        MOV KEYBUF1,#03H;
+        MOV R1,#1;
+        AJMP WAT4RLS4;
+    C43BUF2:
+        MOV KEYBUF2,#03H;
+        MOV R1,#0;
+        AJMP WAT4RLS4;
+    C44:
+        CJNE A,#08H,WAT4RLS4;
+        NOP;
+
+    WAT4RLS4:;WAITE FOR REALSE
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JNZ WAT4RLS4;
+
+
+
+    KBSCNEND:
+
+        AJMP KBSCNR1;
+    EXITSET:
+        CPL P1.0;
+        CPL P1.1;
+    /*退出中断，等待键盘释放，*/
+    WAT4EXIT:;WAITE FOR REALSE
+        MOV A,P3;
+        ANL A,#0FH;
+        XRL A,#0FH;
+        JNZ WAT4EXIT;
+
+
+        CLR RS0;USE THE DEFAULT SET OF REGISTERS;
+        POP ACC;
+        POP PSW;
+        SETB IT1;
+        MOV P3,#0FH;
+        RETI;
+
+
+    DELAY4KBD:
+        MOV R6,#10
+    D1:        
+        MOV R7,#248
+        DJNZ R7,$
+        DJNZ R6,D1
+        RET
+
+
+
+
+
+
+/*废弃，未使用*/
 PWNWAT: ;power on wait
-    PUSH PSW;
-    PUSH ACC;
-    SETB RS0;
-    MOV R1,#40;
-    MOV R2,#10;
-PW1:
-    NOP;
-    NOP;
-    DJNZ R1,PW1;
-    MOV R1,#40;
-    DJNZ R2,PW1;
-    POP ACC;
-    POP PSW;
-    RET;
+        PUSH PSW;
+        PUSH ACC;
+        SETB RS0;
+        MOV R1,#40;
+        MOV R2,#10;
+    PW1:
+        NOP;
+        NOP;
+        DJNZ R1,PW1;
+        MOV R1,#40;
+        DJNZ R2,PW1;
+        POP ACC;
+        POP PSW;
+        RET;
 
 
 TIMETAB:
