@@ -86,23 +86,48 @@ MAIN:
 
         LIGHTTIME:
             LCALL DELAY1S;延时1s后数码管显示相应数字
-            DEC R3;
-            MOV A,#00H;
-            CJNE A,03H,CFG;
-            DEC R2;
-        CFG:
-            CJNE R3,#00H,ASGTO;
-            MOV R3,OFFSET1;
-        ASGTO:
-            DJNZ R5,LIGHTTIME;
-            CPL P1.0;
-            AJMP LOOP;
+
+
+            /********************************/
+            ;MOV P2,#0FFH;p2作为数据输入口
+            MOV P0,#00H;
+            MOV A,P2;
+            ANL A,#07H; 0  截取三位输入信号，只有输入信号是1，3，5才点亮
+            ;JZ LIGHT;为0直接跳转到点亮led；
+            CJNE A,#01H,CMP3INT;
+            CLR TR0;
+            CLR ET0;
+            AJMP LIGHT;
+            CMP3INT:
+                CJNE A,#03H,CMP5INT;
+                CLR TR0;
+                CLR ET0;
+                AJMP LIGHT;为2，直接跳转到LIGHT
+            CMP5INT:
+                CJNE A,#05H,NOINT;为4，执行LIGHT否则返回继续读取P2口
+                CLR TR0;
+                CLR ET0;
+                AJMP LIGHT;
+                /**************************************/
+
+            NOINT:
+                DEC R3;
+                MOV A,#00H;
+                CJNE A,03H,CFG;
+                DEC R2;
+            CFG:
+                CJNE R3,#00H,ASGTO;
+                MOV R3,OFFSET1;
+            ASGTO:
+                DJNZ R5,LIGHTTIME;
+                CPL P1.0;
+                AJMP LOOP;
 
 ;延时1s子程序
 DELAY1S:
-        PUSH PSW;
-        PUSH ACC;
-        AJMP DELAY10MS;
+        ;PUSH PSW;
+        ;PUSH ACC;
+        ;AJMP DELAY10MS;
     /*延时10ms子程序 65536-10000=55536=0D8F0H
     *设置延时10ms：数码管动态刷新频率需要高于50hz，人眼才能察觉不到变化；
     *中断服务程序里面数码管动态刷新采用负载均衡的思想，
@@ -129,8 +154,8 @@ DELAY1S:
         MOV R6,LOOPTAG;
         CJNE R6,#64H,TIMEOUT;
         MOV LOOPTAG,#00H;
-        POP ACC;
-        POP PSW;
+        ;POP ACC;
+        ;POP PSW;
         RET;
 
 
@@ -466,6 +491,29 @@ KBSCN:
 
 
     KBSCNEND:
+
+        CLR P2.6;
+        SETB P2.7;
+        MOV P0,#0FEH;
+        CALL DELAY4KBD;
+        CLR P2.7;
+        SETB P2.6;
+        MOV DPTR,#TIMETAB;
+        MOV A,R1;
+        JZ DISBUF2; 
+        MOV A,KEYBUF1;
+        INC A;
+        MOVC A,@A+DPTR;
+        MOV P0,A;
+        CALL DELAY4KBD;
+        AJMP DISBUFEND;
+        DISBUF2:
+            MOV A,KEYBUF2;
+            INC A;
+            MOVC A,@A+DPTR;
+            MOV P0,A;
+            CALL DELAY4KBD;
+        DISBUFEND:
 
         AJMP KBSCNR1;
     EXITSET:
