@@ -54,13 +54,15 @@ MAIN:
             LCALL DELAY4KBD;每秒100次
 
         MOV A,P2;
-        ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
-        ;MOV R7,A;暂存
-        JZ LIGHT;为0直接跳转到点亮led；
-        CJNE A,#02H,CMP4;
-        AJMP LIGHT;为2，直接跳转到LIGHT
-        CMP4:
-            CJNE A,#04H,LOOP;为4，执行LIGHT否则返回继续读取P2口
+        ANL A,#07H; 0  截取三位输入信号，只有输入信号是1，3，5才点亮
+        ;JZ LIGHT;为0直接跳转到点亮led；
+        CJNE A,#01H,CMP3;
+        AJMP LIGHT;
+        CMP3:
+            CJNE A,#03H,CMP5;
+            AJMP LIGHT;为2，直接跳转到LIGHT
+        CMP5:
+            CJNE A,#05H,LOOP;为4，执行LIGHT否则返回继续读取P2口
 
     LIGHT:
         CPL P1.0;
@@ -100,9 +102,22 @@ MAIN:
 DELAY1S:
         PUSH PSW;
         PUSH ACC;
-        AJMP DELAY50MS;
-    ;延时50ms子程序 65536-50000=15536=3CB0
-    DELAY50MS:
+        AJMP DELAY10MS;
+    /*延时10ms子程序 65536-10000=55536=0D8F0H
+    *设置延时10ms：数码管动态刷新频率需要高于50hz，人眼才能察觉不到变化；
+    *中断服务程序里面数码管动态刷新采用负载均衡的思想，
+    *即改变数码管动态刷新的顺序，以达到各个数码管上电时间的均衡，
+    *
+    *
+    *       中断--------->数码管A------>数码管B
+    *           .
+    *           .
+    *           .-------->数码管B------>数码管A
+    *10ms延时刷新频率为50hz，不是100hz，因为是两次中断才刷新一次
+    *
+    *
+    */
+    DELAY10MS:
         MOV TMOD,#01H;计数器1工作于方式1
         MOV TH0,#THT;加一计数器高字节
         MOV TL0,#TLT;加一计数器低字节
@@ -111,10 +126,7 @@ DELAY1S:
         SETB ET0;
         
     TIMEOUT:  
-    
-
         MOV R6,LOOPTAG;
-
         CJNE R6,#64H,TIMEOUT;
         MOV LOOPTAG,#00H;
         POP ACC;

@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     1
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -25,9 +25,9 @@ LOC  OBJ            LINE     SOURCE
 0000                  16         ORG 0000H;
 0000 0160             17         AJMP MAIN;
 000B                  18         ORG 000BH;T0溢出中断入口地址
-000B 01FA             19         AJMP DELAY;
+000B 01FD             19         AJMP DELAY;
 0013                  20         ORG 0013H;
-0013 2157             21         AJMP KBSCN;
+0013 215A             21         AJMP KBSCN;
 0060                  22         ORG 0060H;
                       23         ;!!!!JNZ需要更改 JNZ 是为了测试
                       24     
@@ -58,170 +58,170 @@ LOC  OBJ            LINE     SOURCE
 008F 75A0FF           49             MOV P2,#0FFH;p2作为数据输入口
                       50     
 0092 7F0A             51             MOV R7,#0AH;
-                      52             ;DTCNSPDCNRL:;DETECTION SPEED CONTROL 检测速度控制，每秒10次
-0094 1202F9           53                 LCALL DELAY4KBD;
-                      54                 ;DJNZ R7,DTCNSPDCNRL;
+0094                  52             DTCNSPDCNRL:;DETECTION SPEED CONTROL 检测速度控制
+                      53     
+0094 1202FC           54                 LCALL DELAY4KBD;每秒100次
                       55     
 0097 E5A0             56             MOV A,P2;
-0099 5407             57             ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
-                      58             ;MOV R7,A;暂存
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     2
+0099 5407             57             ANL A,#07H; 0  截取三位输入信号，只有输入信号是1，3，5才点亮
+                      58             ;JZ LIGHT;为0直接跳转到点亮led；
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     2
 
-009B 6008             59             JZ LIGHT;为0直接跳转到点亮led；
-009D B40202           60             CJNE A,#02H,CMP4;
-00A0 01A5             61             AJMP LIGHT;为2，直接跳转到LIGHT
-00A2                  62             CMP4:
-00A2 B404D8           63                 CJNE A,#04H,LOOP;为4，执行LIGHT否则返回继续读取P2口
-                      64     
-00A5                  65         LIGHT:
-00A5 B290             66             CPL P1.0;
-00A7 00               67             NOP;
-00A8 00               68             NOP;
-00A9 AD55             69             MOV R5,DEFAULTDT;
-00AB AA57             70             MOV R2,OFFSET2;存放数码管十位对应偏移地址
-00AD E551             71             MOV A,ADJUSTFLAG;
-00AF B40004           72             CJNE A,#0,ADJUST;
-00B2 AB58             73             MOV R3,OFFSET1;存放数码管个位对应偏移地址
-                      74             
-00B4 01C3             75             AJMP LIGHTTIME;
-00B6                  76             ADJUST:
-00B6 E553             77                 MOV A,KEYBUF2;
-00B8 B40004           78                 CJNE A,#00H,ADJUST1;
-00BB AB58             79                 MOV R3,OFFSET1;
-00BD 01C3             80                 AJMP LIGHTTIME;
-00BF                  81                 ADJUST1:
-00BF FB               82                 MOV R3,A;
-00C0 755100           83                 MOV ADJUSTFLAG,#0;
-                      84     
-00C3                  85             LIGHTTIME:
-00C3 1200D8           86                 LCALL DELAY1S;延时1s后数码管显示相应数字
-00C6 1B               87                 DEC R3;
-00C7 7400             88                 MOV A,#00H;
-00C9 B50301           89                 CJNE A,03H,CFG;
-00CC 1A               90                 DEC R2;
-00CD                  91             CFG:
-00CD BB0002           92                 CJNE R3,#00H,ASGTO;
-00D0 AB58             93                 MOV R3,OFFSET1;
-00D2                  94             ASGTO:
-00D2 DDEF             95                 DJNZ R5,LIGHTTIME;
-00D4 B290             96                 CPL P1.0;
-00D6 017D             97                 AJMP LOOP;
-                      98     
-                      99     ;延时1s子程序
-00D8                 100     DELAY1S:
-00D8 C0D0            101             PUSH PSW;
-00DA C0E0            102             PUSH ACC;
-00DC 01DE            103             AJMP DELAY50MS;
-                     104         ;延时50ms子程序 65536-50000=15536=3CB0
-00DE                 105         DELAY50MS:
-00DE 758901          106             MOV TMOD,#01H;计数器1工作于方式1
-00E1 758CD8          107             MOV TH0,#THT;加一计数器高字节
-00E4 758AF0          108             MOV TL0,#TLT;加一计数器低字节
-00E7 D2AF            109             SETB EA;
-00E9 D28C            110             SETB TR0;
-00EB D2A9            111             SETB ET0;
-                     112             
-00ED                 113         TIMEOUT:  
-                     114         
+009B B40102           59             CJNE A,#01H,CMP3;
+009E 01A8             60             AJMP LIGHT;
+00A0                  61             CMP3:
+00A0 B40302           62                 CJNE A,#03H,CMP5;
+00A3 01A8             63                 AJMP LIGHT;为2，直接跳转到LIGHT
+00A5                  64             CMP5:
+00A5 B405D5           65                 CJNE A,#05H,LOOP;为4，执行LIGHT否则返回继续读取P2口
+                      66     
+00A8                  67         LIGHT:
+00A8 B290             68             CPL P1.0;
+00AA 00               69             NOP;
+00AB 00               70             NOP;
+00AC AD55             71             MOV R5,DEFAULTDT;
+00AE AA57             72             MOV R2,OFFSET2;存放数码管十位对应偏移地址
+00B0 E551             73             MOV A,ADJUSTFLAG;
+00B2 B40004           74             CJNE A,#0,ADJUST;
+00B5 AB58             75             MOV R3,OFFSET1;存放数码管个位对应偏移地址
+                      76             
+00B7 01C6             77             AJMP LIGHTTIME;
+00B9                  78             ADJUST:
+00B9 E553             79                 MOV A,KEYBUF2;
+00BB B40004           80                 CJNE A,#00H,ADJUST1;
+00BE AB58             81                 MOV R3,OFFSET1;
+00C0 01C6             82                 AJMP LIGHTTIME;
+00C2                  83                 ADJUST1:
+00C2 FB               84                 MOV R3,A;
+00C3 755100           85                 MOV ADJUSTFLAG,#0;
+                      86     
+00C6                  87             LIGHTTIME:
+00C6 1200DB           88                 LCALL DELAY1S;延时1s后数码管显示相应数字
+00C9 1B               89                 DEC R3;
+00CA 7400             90                 MOV A,#00H;
+00CC B50301           91                 CJNE A,03H,CFG;
+00CF 1A               92                 DEC R2;
+00D0                  93             CFG:
+00D0 BB0002           94                 CJNE R3,#00H,ASGTO;
+00D3 AB58             95                 MOV R3,OFFSET1;
+00D5                  96             ASGTO:
+00D5 DDEF             97                 DJNZ R5,LIGHTTIME;
+00D7 B290             98                 CPL P1.0;
+00D9 017D             99                 AJMP LOOP;
+                     100     
+                     101     ;延时1s子程序
+00DB                 102     DELAY1S:
+00DB C0D0            103             PUSH PSW;
+00DD C0E0            104             PUSH ACC;
+00DF 01E1            105             AJMP DELAY10MS;
+                     106         
+                     107     
+                     108     
+                     109     
+                     110     
+                     111     
+                     112     
+                     113     
+                     114     
                      115     
-00ED AE60            116             MOV R6,LOOPTAG;
+                     116     
                      117     
-00EF BE64FB          118             CJNE R6,#64H,TIMEOUT;
-00F2 756000          119             MOV LOOPTAG,#00H;
-00F5 D0E0            120             POP ACC;
-00F7 D0D0            121             POP PSW;
-00F9 22              122             RET;
-                     123     
-                     124     
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     3
+                     118     
+                     119     
+00E1                 120         DELAY10MS:
+00E1 758901          121             MOV TMOD,#01H;计数器1工作于方式1
+00E4 758CD8          122             MOV TH0,#THT;加一计数器高字节
+00E7 758AF0          123             MOV TL0,#TLT;加一计数器低字节
+00EA D2AF            124             SETB EA;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     3
 
-                     125     
-                     126     
-                     127     
-00FA                 128     DELAY:;计数器1溢出中断出口
-00FA C0D0            129             PUSH PSW;
-00FC C0E0            130             PUSH ACC;
-00FE AE60            131             MOV R6,LOOPTAG;
-0100 0E              132             INC R6;
-0101 8E60            133             MOV LOOPTAG,R6;
-0103 758CD8          134             MOV TH0,#THT;加一计数器高字节
-0106 758AF0          135             MOV TL0,#TLT;加一计数器低字节
+00EC D28C            125             SETB TR0;
+00EE D2A9            126             SETB ET0;
+                     127             
+00F0                 128         TIMEOUT:  
+00F0 AE60            129             MOV R6,LOOPTAG;
+00F2 BE64FB          130             CJNE R6,#64H,TIMEOUT;
+00F5 756000          131             MOV LOOPTAG,#00H;
+00F8 D0E0            132             POP ACC;
+00FA D0D0            133             POP PSW;
+00FC 22              134             RET;
+                     135     
                      136     
-                     137             
-                     138             ;点亮数码管
-0109                 139         NUMDIS:
-                     140         
-                     141             
-0109 EE              142             MOV A,R6;
-010A 5401            143             ANL A,#01H;
-010C F556            144             MOV BALANCE,A;负载均衡
-010E 701A            145             JNZ BAL2;
-0110                 146         BAL1:
-0110 7CFD            147             MOV R4,#0FDH;R4存放数码管位置个位
-                     148             
-                     149             ;MOV R3,A;
-0112 C2A6            150             CLR P2.6;位选选中个位
-0114 D2A7            151             SETB P2.7;
-                     152             ;MOV P0,#0FFH;
-0116 8C80            153             MOV P0,R4;
-0118 C2A7            154             CLR P2.7;
-                     155     
-011A 900319          156             MOV DPTR,#TIMETAB;
-011D EB              157             MOV A,R3;
-011E 93              158             MOVC A,@A+DPTR;查表得到相应数字对应值
-011F D2A6            159             SETB P2.6;
-0121 758000          160             MOV P0,#00H;
-0124 F580            161             MOV P0,A;
-0126 E556            162             MOV A,BALANCE;
-0128 701A            163             JNZ BAL3;
-                     164             ;LCALL PWNWAT;延时1ms
-                     165             ;LCALL PWNWAT;
-                     166             
-012A                 167         BAL2:
-012A 7CFE            168             MOV R4,#0FEH;
-                     169         
-012C 900319          170             MOV DPTR, #TIMETAB;
-012F EA              171             MOV A,R2;
-0130 93              172             MOVC A,@A+DPTR;
-                     173             ;CALL PWNWAT;
-0131 C2A6            174             CLR P2.6;
-0133 D2A7            175             SETB P2.7;
-                     176             ;MOV P0,#0FFH;
-0135 8C80            177             MOV P0,R4;
-0137 C2A7            178             CLR P2.7;
-0139 D2A6            179             SETB P2.6;
-013B 758000          180             MOV P0,#00H;
-013E F580            181             MOV P0,A;
-0140 E556            182             MOV A,BALANCE;
-0142 70CC            183             JNZ BAL1;
-                     184             ;LCALL PWNWAT;
-0144                 185         BAL3:
-0144 BE640B          186             CJNE R6,#64H,BREAK;
-0147 C2A6            187             CLR P2.6;
-0149 C2AB            188             CLR ET1;
-014B C28E            189             CLR TR1;
-014D C2AF            190             CLR EA;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     4
+                     137     
+                     138     
+                     139     
+00FD                 140     DELAY:;计数器1溢出中断出口
+00FD C0D0            141             PUSH PSW;
+00FF C0E0            142             PUSH ACC;
+0101 AE60            143             MOV R6,LOOPTAG;
+0103 0E              144             INC R6;
+0104 8E60            145             MOV LOOPTAG,R6;
+0106 758CD8          146             MOV TH0,#THT;加一计数器高字节
+0109 758AF0          147             MOV TL0,#TLT;加一计数器低字节
+                     148     
+                     149             
+                     150             ;点亮数码管
+010C                 151         NUMDIS:
+                     152         
+                     153             
+010C EE              154             MOV A,R6;
+010D 5401            155             ANL A,#01H;
+010F F556            156             MOV BALANCE,A;负载均衡
+0111 701A            157             JNZ BAL2;
+0113                 158         BAL1:
+0113 7CFD            159             MOV R4,#0FDH;R4存放数码管位置个位
+                     160             
+                     161             ;MOV R3,A;
+0115 C2A6            162             CLR P2.6;位选选中个位
+0117 D2A7            163             SETB P2.7;
+                     164             ;MOV P0,#0FFH;
+0119 8C80            165             MOV P0,R4;
+011B C2A7            166             CLR P2.7;
+                     167     
+011D 90031C          168             MOV DPTR,#TIMETAB;
+0120 EB              169             MOV A,R3;
+0121 93              170             MOVC A,@A+DPTR;查表得到相应数字对应值
+0122 D2A6            171             SETB P2.6;
+0124 758000          172             MOV P0,#00H;
+0127 F580            173             MOV P0,A;
+0129 E556            174             MOV A,BALANCE;
+012B 701A            175             JNZ BAL3;
+                     176             ;LCALL PWNWAT;延时1ms
+                     177             ;LCALL PWNWAT;
+                     178             
+012D                 179         BAL2:
+012D 7CFE            180             MOV R4,#0FEH;
+                     181         
+012F 90031C          182             MOV DPTR, #TIMETAB;
+0132 EA              183             MOV A,R2;
+0133 93              184             MOVC A,@A+DPTR;
+                     185             ;CALL PWNWAT;
+0134 C2A6            186             CLR P2.6;
+0136 D2A7            187             SETB P2.7;
+                     188             ;MOV P0,#0FFH;
+0138 8C80            189             MOV P0,R4;
+013A C2A7            190             CLR P2.7;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     4
 
-014F 758900          191             MOV TMOD,#00H;
-                     192             ;MOV 60H,#00H;
-                     193             
-0152                 194         BREAK:
-0152 D0E0            195             POP ACC;
-0154 D0D0            196             POP PSW;
-0156 32              197             RETI;
-                     198     
-                     199     
-                     200     
-                     201     
-                     202     
-                     203     
-                     204     
-                     205     
-                     206     
-                     207     
-                     208     
-                     209     
+013C D2A6            191             SETB P2.6;
+013E 758000          192             MOV P0,#00H;
+0141 F580            193             MOV P0,A;
+0143 E556            194             MOV A,BALANCE;
+0145 70CC            195             JNZ BAL1;
+                     196             ;LCALL PWNWAT;
+0147                 197         BAL3:
+0147 BE640B          198             CJNE R6,#64H,BREAK;
+014A C2A6            199             CLR P2.6;
+014C C2AB            200             CLR ET1;
+014E C28E            201             CLR TR1;
+0150 C2AF            202             CLR EA;
+0152 758900          203             MOV TMOD,#00H;
+                     204             ;MOV 60H,#00H;
+                     205             
+0155                 206         BREAK:
+0155 D0E0            207             POP ACC;
+0157 D0D0            208             POP PSW;
+0159 32              209             RETI;
                      210     
                      211     
                      212     
@@ -229,347 +229,359 @@ LOC  OBJ            LINE     SOURCE
                      214     
                      215     
                      216     
-0157                 217     KBSCN:
+                     217     
                      218     
-0157 B297            219             CPL P1.7;p1.7为键盘中断标志，灯亮说明正确进入键盘中断服务程�
-                             ��
-                     220             
-0159 755403          221             MOV KEYBUF1,#03H;
-015C 755300          222             MOV KEYBUF2,#00H;
-015F 75551E          223             MOV DEFAULTDT,#30;
-                     224             
-0162                 225         WAT4RLS:;WAITE FOR REALSE
-0162 E5B0            226             MOV A,P3;
-0164 540F            227             ANL A,#0FH;
-0166 640F            228             XRL A,#0FH;
-0168 70F8            229             JNZ WAT4RLS;
+                     219     
+                     220     
+                     221     
+                     222     
+                     223     
+                     224     
+                     225     
+                     226     
+                     227     
+                     228     
+015A                 229     KBSCN:
                      230     
-                     231     
+015A B297            231             CPL P1.7;p1.7为键盘中断标志，灯亮说明正确进入键盘中断服务程�
+                             ��
                      232             
-016A C0D0            233             PUSH PSW;
-016C C0E0            234             PUSH ACC;
-016E D2D3            235             SETB RS0;USE THE SECOND SET OF REGISTERS;
-0170 C28A            236             CLR IT1;
-0172 7900            237             MOV R1,#0;R1用作标志，用来标记数据应该存入哪个buf。
-                     238     
-                     239         
-                     240     
-                     241     
+015C 755403          233             MOV KEYBUF1,#03H;
+015F 755300          234             MOV KEYBUF2,#00H;
+0162 75551E          235             MOV DEFAULTDT,#30;
+                     236             
+0165                 237         WAT4RLS:;WAITE FOR REALSE
+0165 E5B0            238             MOV A,P3;
+0167 540F            239             ANL A,#0FH;
+0169 640F            240             XRL A,#0FH;
+016B 70F8            241             JNZ WAT4RLS;
                      242     
                      243     
-                     244     
-                     245     
-                     246     
-                     247     
-                     248         
-0174                 249         KBSCNR1:
-0174 75B0FF          250             MOV P3,#0FFH;
-0177 C2B4            251             CLR P3.4;
-0179 E5B0            252             MOV A,P3;
-017B 540F            253             ANL A,#0FH;
-017D 640F            254             XRL A,#0FH;
-017F 6016            255             JZ KBSCNR2;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     5
+                     244             
+016D C0D0            245             PUSH PSW;
+016F C0E0            246             PUSH ACC;
+0171 D2D3            247             SETB RS0;USE THE SECOND SET OF REGISTERS;
+0173 C28A            248             CLR IT1;
+0175 7900            249             MOV R1,#0;R1用作标志，用来标记数据应该存入哪个buf。
+                     250     
+                     251         
+                     252     
+                     253     
+                     254     
+                     255     
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     5
 
-                     256             
-0181 51F9            257             CALL DELAY4KBD;
+                     256     
+                     257     
                      258     
-0183 E5B0            259             MOV A,P3;
-0185 540F            260             ANL A,#0FH;
-0187 640F            261             XRL A,#0FH;
-0189 600C            262             JZ KBSCNR2;
-018B                 263         C11:
-018B 00              264             NOP;
-018C                 265         C12:
-018C 00              266             NOP;
-018D                 267         C13:
-018D 00              268             NOP;
-018E                 269         C14:
-018E 00              270             NOP;
-                     271         
-018F                 272         WAT4RLS1:;WAITE FOR REALSE
-018F E5B0            273             MOV A,P3;
-0191 540F            274             ANL A,#0FH;
-0193 640F            275             XRL A,#0FH;
-0195 70F8            276             JNZ WAT4RLS1;
-                     277     
-0197                 278         KBSCNR2:
-0197 75B0FF          279             MOV P3,#0FFH;
-019A C2B5            280             CLR P3.5;
-019C E5B0            281             MOV A,P3;
-019E 540F            282             ANL A,#0FH;
-01A0 640F            283             XRL A,#0FH;
-01A2 6055            284             JZ KBSCNR3;
-01A4 51F9            285             CALL DELAY4KBD;
-                     286     
-01A6 E5B0            287             MOV A,P3;
-01A8 540F            288             ANL A,#0FH;
-01AA 640F            289             XRL A,#0FH;
-01AC 604B            290             JZ KBSCNR3;
-                     291     
-01AE                 292         C21:
-01AE B40113          293             CJNE A,#01H,C22;0001左上角被按下
-                     294             
-                     295     
-                     296     
-01B1 B90009          297             CJNE R1,#0,C21BUF2;
-01B4 755407          298             MOV KEYBUF1,#07H;
-01B7 B290            299             CPL P1.0;
-01B9 7901            300             MOV R1,#1;
-01BB 21F1            301             AJMP WAT4RLS2;
-01BD                 302         C21BUF2:
-01BD 755307          303             MOV KEYBUF2,#07H;
-01C0 7900            304             MOV R1,#0;
-01C2 21F1            305             AJMP WAT4RLS2;
-01C4                 306         C22:
-01C4 B40211          307             CJNE A,#02H,C23;
-01C7 B90007          308             CJNE R1,#0,C22BUF2;
-01CA 755404          309             MOV KEYBUF1,#04H;
-01CD 7901            310             MOV R1,#1;
-01CF 21F1            311             AJMP WAT4RLS2;
-01D1                 312         C22BUF2:
-01D1 755304          313             MOV KEYBUF2,#04H;
-01D4 7900            314             MOV R1,#0;
-01D6 21F1            315             AJMP WAT4RLS2;
-01D8                 316         C23:
-01D8 B40411          317             CJNE A,#04H,C24;
-01DB B90007          318             CJNE R1,#0,C23BUF2;
-01DE 755401          319             MOV KEYBUF1,#01H;
-01E1 7901            320             MOV R1,#1;
-01E3 21F1            321             AJMP WAT4RLS2;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     6
+                     259     
+                     260         
+0177                 261         KBSCNR1:
+0177 75B0FF          262             MOV P3,#0FFH;
+017A C2B4            263             CLR P3.4;
+017C E5B0            264             MOV A,P3;
+017E 540F            265             ANL A,#0FH;
+0180 640F            266             XRL A,#0FH;
+0182 6016            267             JZ KBSCNR2;
+                     268             
+0184 51FC            269             CALL DELAY4KBD;
+                     270     
+0186 E5B0            271             MOV A,P3;
+0188 540F            272             ANL A,#0FH;
+018A 640F            273             XRL A,#0FH;
+018C 600C            274             JZ KBSCNR2;
+018E                 275         C11:
+018E 00              276             NOP;
+018F                 277         C12:
+018F 00              278             NOP;
+0190                 279         C13:
+0190 00              280             NOP;
+0191                 281         C14:
+0191 00              282             NOP;
+                     283         
+0192                 284         WAT4RLS1:;WAITE FOR REALSE
+0192 E5B0            285             MOV A,P3;
+0194 540F            286             ANL A,#0FH;
+0196 640F            287             XRL A,#0FH;
+0198 70F8            288             JNZ WAT4RLS1;
+                     289     
+019A                 290         KBSCNR2:
+019A 75B0FF          291             MOV P3,#0FFH;
+019D C2B5            292             CLR P3.5;
+019F E5B0            293             MOV A,P3;
+01A1 540F            294             ANL A,#0FH;
+01A3 640F            295             XRL A,#0FH;
+01A5 6055            296             JZ KBSCNR3;
+01A7 51FC            297             CALL DELAY4KBD;
+                     298     
+01A9 E5B0            299             MOV A,P3;
+01AB 540F            300             ANL A,#0FH;
+01AD 640F            301             XRL A,#0FH;
+01AF 604B            302             JZ KBSCNR3;
+                     303     
+01B1                 304         C21:
+01B1 B40113          305             CJNE A,#01H,C22;0001左上角被按下
+                     306             
+                     307     
+                     308     
+01B4 B90009          309             CJNE R1,#0,C21BUF2;
+01B7 755407          310             MOV KEYBUF1,#07H;
+01BA B290            311             CPL P1.0;
+01BC 7901            312             MOV R1,#1;
+01BE 21F4            313             AJMP WAT4RLS2;
+01C0                 314         C21BUF2:
+01C0 755307          315             MOV KEYBUF2,#07H;
+01C3 7900            316             MOV R1,#0;
+01C5 21F4            317             AJMP WAT4RLS2;
+01C7                 318         C22:
+01C7 B40211          319             CJNE A,#02H,C23;
+01CA B90007          320             CJNE R1,#0,C22BUF2;
+01CD 755404          321             MOV KEYBUF1,#04H;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     6
 
-01E5                 322         C23BUF2:
-01E5 755301          323             MOV KEYBUF2,#01H;
-01E8 7900            324             MOV R1,#0;
-01EA 21F1            325             AJMP WAT4RLS2;
-01EC                 326         C24:
-01EC B40802          327             CJNE A,#08H,WAT4RLS2;
-                     328             ;MOV KEYBUF1,#0FFH;
-01EF 41C7            329             AJMP EXITSET;
-                     330     
-01F1                 331         WAT4RLS2:;WAITE FOR REALSE
-01F1 E5B0            332             MOV A,P3;
-01F3 540F            333             ANL A,#0FH;
-01F5 640F            334             XRL A,#0FH;
-01F7 70F8            335             JNZ WAT4RLS2;
-                     336     
-                     337     
-                     338     
-                     339     
-01F9                 340         KBSCNR3:
-01F9 75B0FF          341             MOV P3,#0FFH;
-01FC C2B6            342             CLR P3.6;
-01FE E5B0            343             MOV A,P3;
-0200 540F            344             ANL A,#0FH;
-0202 640F            345             XRL A,#0FH;
-0204 6060            346             JZ KBSCNR4;
-0206 51F9            347             CALL DELAY4KBD;
+01D0 7901            322             MOV R1,#1;
+01D2 21F4            323             AJMP WAT4RLS2;
+01D4                 324         C22BUF2:
+01D4 755304          325             MOV KEYBUF2,#04H;
+01D7 7900            326             MOV R1,#0;
+01D9 21F4            327             AJMP WAT4RLS2;
+01DB                 328         C23:
+01DB B40411          329             CJNE A,#04H,C24;
+01DE B90007          330             CJNE R1,#0,C23BUF2;
+01E1 755401          331             MOV KEYBUF1,#01H;
+01E4 7901            332             MOV R1,#1;
+01E6 21F4            333             AJMP WAT4RLS2;
+01E8                 334         C23BUF2:
+01E8 755301          335             MOV KEYBUF2,#01H;
+01EB 7900            336             MOV R1,#0;
+01ED 21F4            337             AJMP WAT4RLS2;
+01EF                 338         C24:
+01EF B40802          339             CJNE A,#08H,WAT4RLS2;
+                     340             ;MOV KEYBUF1,#0FFH;
+01F2 41CA            341             AJMP EXITSET;
+                     342     
+01F4                 343         WAT4RLS2:;WAITE FOR REALSE
+01F4 E5B0            344             MOV A,P3;
+01F6 540F            345             ANL A,#0FH;
+01F8 640F            346             XRL A,#0FH;
+01FA 70F8            347             JNZ WAT4RLS2;
                      348     
-0208 E5B0            349             MOV A,P3;
-020A 540F            350             ANL A,#0FH;
-020C 640F            351             XRL A,#0FH;
-020E 6056            352             JZ KBSCNR4;
-                     353     
-0210                 354         C31:
-0210 B40111          355             CJNE A,#01H,C32;0001左上角被按下
-0213 B90007          356             CJNE R1,#0,C31BUF2;
-0216 755408          357             MOV KEYBUF1,#08H;
-0219 7901            358             MOV R1,#1;
-021B 415E            359             AJMP WAT4RLS3;
-021D                 360         C31BUF2:
-021D 755308          361             MOV KEYBUF2,#08H;
-0220 7900            362             MOV R1,#0;
-0222 415E            363             AJMP WAT4RLS3;
-0224                 364         C32:
-0224 B40211          365             CJNE A,#02H,C33;
-0227 B90007          366             CJNE R1,#0,C32BUF2;
-022A 755405          367             MOV KEYBUF1,#05H;
-022D 7901            368             MOV R1,#1;
-022F 415E            369             AJMP WAT4RLS3;
-0231                 370         C32BUF2:
-0231 755305          371             MOV KEYBUF2,#05H;
-0234 7900            372             MOV R1,#0;
-0236 415E            373             AJMP WAT4RLS3;
-0238                 374         C33:
-0238 B40411          375             CJNE A,#04H,C34;
-023B B90007          376             CJNE R1,#0,C33BUF2;
-023E 755402          377             MOV KEYBUF1,#02H;
-0241 7901            378             MOV R1,#1;
-0243 415E            379             AJMP WAT4RLS3;
-0245                 380         C33BUF2:
-0245 755302          381             MOV KEYBUF2,#02H;
-0248 7900            382             MOV R1,#0;
-024A 415E            383             AJMP WAT4RLS3;
-024C                 384         C34:
-024C B408A2          385             CJNE A,#08H,WAT4RLS2;
-024F B90007          386             CJNE R1,#0,C34BUF2;
-0252 755400          387             MOV KEYBUF1,#00H;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     7
+                     349     
+                     350     
+                     351     
+01FC                 352         KBSCNR3:
+01FC 75B0FF          353             MOV P3,#0FFH;
+01FF C2B6            354             CLR P3.6;
+0201 E5B0            355             MOV A,P3;
+0203 540F            356             ANL A,#0FH;
+0205 640F            357             XRL A,#0FH;
+0207 6060            358             JZ KBSCNR4;
+0209 51FC            359             CALL DELAY4KBD;
+                     360     
+020B E5B0            361             MOV A,P3;
+020D 540F            362             ANL A,#0FH;
+020F 640F            363             XRL A,#0FH;
+0211 6056            364             JZ KBSCNR4;
+                     365     
+0213                 366         C31:
+0213 B40111          367             CJNE A,#01H,C32;0001左上角被按下
+0216 B90007          368             CJNE R1,#0,C31BUF2;
+0219 755408          369             MOV KEYBUF1,#08H;
+021C 7901            370             MOV R1,#1;
+021E 4161            371             AJMP WAT4RLS3;
+0220                 372         C31BUF2:
+0220 755308          373             MOV KEYBUF2,#08H;
+0223 7900            374             MOV R1,#0;
+0225 4161            375             AJMP WAT4RLS3;
+0227                 376         C32:
+0227 B40211          377             CJNE A,#02H,C33;
+022A B90007          378             CJNE R1,#0,C32BUF2;
+022D 755405          379             MOV KEYBUF1,#05H;
+0230 7901            380             MOV R1,#1;
+0232 4161            381             AJMP WAT4RLS3;
+0234                 382         C32BUF2:
+0234 755305          383             MOV KEYBUF2,#05H;
+0237 7900            384             MOV R1,#0;
+0239 4161            385             AJMP WAT4RLS3;
+023B                 386         C33:
+023B B40411          387             CJNE A,#04H,C34;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     7
 
-0255 7901            388             MOV R1,#1;
-0257 415E            389             AJMP WAT4RLS3;
-0259                 390         C34BUF2:
-0259 755300          391             MOV KEYBUF2,#00H;
-025C 7900            392             MOV R1,#0;
-                     393     
-025E                 394         WAT4RLS3:;WAITE FOR REALSE
-025E E5B0            395             MOV A,P3;
-0260 540F            396             ANL A,#0FH;
-0262 640F            397             XRL A,#0FH;
-0264 70F8            398             JNZ WAT4RLS3;
-                     399     
-0266                 400         KBSCNR4:
-0266 75B0FF          401             MOV P3,#0FFH;
-0269 C2B7            402             CLR P3.7;
-026B E5B0            403             MOV A,P3;
-026D 540F            404             ANL A,#0FH;
-026F 640F            405             XRL A,#0FH;
-0271 6052            406             JZ KBSCNEND;
-0273 51F9            407             CALL DELAY4KBD;
-                     408     
-0275 E5B0            409             MOV A,P3;
-0277 540F            410             ANL A,#0FH;
-0279 640F            411             XRL A,#0FH;
-027B 6048            412             JZ KBSCNEND;
-                     413     
-027D                 414         C41:
-027D B40111          415             CJNE A,#01H,C42;0001左上角被按下
-0280 B90007          416             CJNE R1,#0,C41BUF2;
-0283 755409          417             MOV KEYBUF1,#09H;
-0286 7901            418             MOV R1,#1;
-0288 41BD            419             AJMP WAT4RLS4;
-028A                 420         C41BUF2:
-028A 755309          421             MOV KEYBUF2,#09H;
-028D 7900            422             MOV R1,#0;
-028F 41BD            423             AJMP WAT4RLS4;
-0291                 424         C42:
-0291 B40211          425             CJNE A,#02H,C43;
-0294 B90007          426             CJNE R1,#0,C42BUF2;
-0297 755406          427             MOV KEYBUF1,#06H;
-029A 7901            428             MOV R1,#1;
-029C 41BD            429             AJMP WAT4RLS4;
-029E                 430         C42BUF2:
-029E 755306          431             MOV KEYBUF2,#06H;
-02A1 7900            432             MOV R1,#0;
-02A3 41BD            433             AJMP WAT4RLS4;
-02A5                 434         C43:
-02A5 B40411          435             CJNE A,#04H,C44;
-02A8 B90007          436             CJNE R1,#0,C43BUF2;
-02AB 755403          437             MOV KEYBUF1,#03H;
-02AE 7901            438             MOV R1,#1;
-02B0 41BD            439             AJMP WAT4RLS4;
-02B2                 440         C43BUF2:
-02B2 755303          441             MOV KEYBUF2,#03H;
-02B5 7900            442             MOV R1,#0;
-02B7 41BD            443             AJMP WAT4RLS4;
-02B9                 444         C44:
-02B9 B40801          445             CJNE A,#08H,WAT4RLS4;
-02BC 00              446             NOP;
-                     447     
-02BD                 448         WAT4RLS4:;WAITE FOR REALSE
-02BD E5B0            449             MOV A,P3;
-02BF 540F            450             ANL A,#0FH;
-02C1 640F            451             XRL A,#0FH;
-02C3 70F8            452             JNZ WAT4RLS4;
-                     453     
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     8
+023E B90007          388             CJNE R1,#0,C33BUF2;
+0241 755402          389             MOV KEYBUF1,#02H;
+0244 7901            390             MOV R1,#1;
+0246 4161            391             AJMP WAT4RLS3;
+0248                 392         C33BUF2:
+0248 755302          393             MOV KEYBUF2,#02H;
+024B 7900            394             MOV R1,#0;
+024D 4161            395             AJMP WAT4RLS3;
+024F                 396         C34:
+024F B408A2          397             CJNE A,#08H,WAT4RLS2;
+0252 B90007          398             CJNE R1,#0,C34BUF2;
+0255 755400          399             MOV KEYBUF1,#00H;
+0258 7901            400             MOV R1,#1;
+025A 4161            401             AJMP WAT4RLS3;
+025C                 402         C34BUF2:
+025C 755300          403             MOV KEYBUF2,#00H;
+025F 7900            404             MOV R1,#0;
+                     405     
+0261                 406         WAT4RLS3:;WAITE FOR REALSE
+0261 E5B0            407             MOV A,P3;
+0263 540F            408             ANL A,#0FH;
+0265 640F            409             XRL A,#0FH;
+0267 70F8            410             JNZ WAT4RLS3;
+                     411     
+0269                 412         KBSCNR4:
+0269 75B0FF          413             MOV P3,#0FFH;
+026C C2B7            414             CLR P3.7;
+026E E5B0            415             MOV A,P3;
+0270 540F            416             ANL A,#0FH;
+0272 640F            417             XRL A,#0FH;
+0274 6052            418             JZ KBSCNEND;
+0276 51FC            419             CALL DELAY4KBD;
+                     420     
+0278 E5B0            421             MOV A,P3;
+027A 540F            422             ANL A,#0FH;
+027C 640F            423             XRL A,#0FH;
+027E 6048            424             JZ KBSCNEND;
+                     425     
+0280                 426         C41:
+0280 B40111          427             CJNE A,#01H,C42;0001左上角被按下
+0283 B90007          428             CJNE R1,#0,C41BUF2;
+0286 755409          429             MOV KEYBUF1,#09H;
+0289 7901            430             MOV R1,#1;
+028B 41C0            431             AJMP WAT4RLS4;
+028D                 432         C41BUF2:
+028D 755309          433             MOV KEYBUF2,#09H;
+0290 7900            434             MOV R1,#0;
+0292 41C0            435             AJMP WAT4RLS4;
+0294                 436         C42:
+0294 B40211          437             CJNE A,#02H,C43;
+0297 B90007          438             CJNE R1,#0,C42BUF2;
+029A 755406          439             MOV KEYBUF1,#06H;
+029D 7901            440             MOV R1,#1;
+029F 41C0            441             AJMP WAT4RLS4;
+02A1                 442         C42BUF2:
+02A1 755306          443             MOV KEYBUF2,#06H;
+02A4 7900            444             MOV R1,#0;
+02A6 41C0            445             AJMP WAT4RLS4;
+02A8                 446         C43:
+02A8 B40411          447             CJNE A,#04H,C44;
+02AB B90007          448             CJNE R1,#0,C43BUF2;
+02AE 755403          449             MOV KEYBUF1,#03H;
+02B1 7901            450             MOV R1,#1;
+02B3 41C0            451             AJMP WAT4RLS4;
+02B5                 452         C43BUF2:
+02B5 755303          453             MOV KEYBUF2,#03H;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     8
 
-                     454     
-                     455     
-02C5                 456         KBSCNEND:
-                     457     
-02C5 2174            458             AJMP KBSCNR1;
-02C7                 459         EXITSET:
-02C7 B297            460             CPL P1.7;
-                     461             ;CPL P1.1;
-                     462         
-02C9                 463         WAT4EXIT:;WAITE FOR REALSE
-02C9 E5B0            464             MOV A,P3;
-02CB 540F            465             ANL A,#0FH;
-02CD 640F            466             XRL A,#0FH;
-02CF 70F8            467             JNZ WAT4EXIT;
-                     468     
-                     469             
-                     470     
-                     471     
-                     472     
-                     473     
-02D1 E554            474             MOV A,KEYBUF1;
-02D3 75F00A          475             MOV B,#10;
-02D6 A4              476             MUL AB;
-02D7 2553            477             ADD A,KEYBUF2;
-02D9 F552            478             MOV KEYBUF3,A;
-                     479     
-02DB C2D3            480             CLR RS0;USE THE DEFAULT SET OF REGISTERS;
-02DD D0E0            481             POP ACC;
-02DF D0D0            482             POP PSW;
+02B8 7900            454             MOV R1,#0;
+02BA 41C0            455             AJMP WAT4RLS4;
+02BC                 456         C44:
+02BC B40801          457             CJNE A,#08H,WAT4RLS4;
+02BF 00              458             NOP;
+                     459     
+02C0                 460         WAT4RLS4:;WAITE FOR REALSE
+02C0 E5B0            461             MOV A,P3;
+02C2 540F            462             ANL A,#0FH;
+02C4 640F            463             XRL A,#0FH;
+02C6 70F8            464             JNZ WAT4RLS4;
+                     465     
+                     466     
+                     467     
+02C8                 468         KBSCNEND:
+                     469     
+02C8 2177            470             AJMP KBSCNR1;
+02CA                 471         EXITSET:
+02CA B297            472             CPL P1.7;
+                     473             ;CPL P1.1;
+                     474         
+02CC                 475         WAT4EXIT:;WAITE FOR REALSE
+02CC E5B0            476             MOV A,P3;
+02CE 540F            477             ANL A,#0FH;
+02D0 640F            478             XRL A,#0FH;
+02D2 70F8            479             JNZ WAT4EXIT;
+                     480     
+                     481             
+                     482     
                      483     
-02E1 855457          484             MOV OFFSET2,KEYBUF1;
-                     485             
-                     486     
-                     487     
-                     488     
-                     489     
-                     490     
-02E4 AC53            491             MOV R4,KEYBUF2;
-02E6 BC0005          492             CJNE R4,#00H,NDINC;
-02E9 855255          493             MOV DEFAULTDT,KEYBUF3;
-02EC 41F3            494             AJMP NDINCBK;
-02EE                 495             NDINC:
-                     496             ;MOV R5,KEYBUF3;
-02EE 0557            497             INC OFFSET2;为什么要加1，因为存放数码管对应16进制的表最前面�
-                             �加了一个00H;
-02F0 855255          498             MOV DEFAULTDT,KEYBUF3;
-02F3                 499             NDINCBK:
+                     484     
+                     485     
+02D4 E554            486             MOV A,KEYBUF1;
+02D6 75F00A          487             MOV B,#10;
+02D9 A4              488             MUL AB;
+02DA 2553            489             ADD A,KEYBUF2;
+02DC F552            490             MOV KEYBUF3,A;
+                     491     
+02DE C2D3            492             CLR RS0;USE THE DEFAULT SET OF REGISTERS;
+02E0 D0E0            493             POP ACC;
+02E2 D0D0            494             POP PSW;
+                     495     
+02E4 855457          496             MOV OFFSET2,KEYBUF1;
+                     497             
+                     498     
+                     499     
                      500     
-02F3 D28A            501             SETB IT1;
-02F5 75B00F          502             MOV P3,#0FH;
-02F8 32              503             RETI;
-                     504     
-                     505     
-02F9                 506         DELAY4KBD:
-02F9 7E0A            507             MOV R6,#10
-02FB                 508         D1:        
-02FB 7FF8            509             MOV R7,#248
-02FD DFFE            510             DJNZ R7,$
-02FF DEFA            511             DJNZ R6,D1
-0301 22              512             RET
-                     513     
-                     514     
-                     515     
+                     501     
+                     502     
+02E7 AC53            503             MOV R4,KEYBUF2;
+02E9 BC0005          504             CJNE R4,#00H,NDINC;
+02EC 855255          505             MOV DEFAULTDT,KEYBUF3;
+02EF 41F6            506             AJMP NDINCBK;
+02F1                 507             NDINC:
+                     508             ;MOV R5,KEYBUF3;
+02F1 0557            509             INC OFFSET2;为什么要加1，因为存放数码管对应16进制的表最前面�
+                             �加了一个00H;
+02F3 855255          510             MOV DEFAULTDT,KEYBUF3;
+02F6                 511             NDINCBK:
+                     512     
+02F6 D28A            513             SETB IT1;
+02F8 75B00F          514             MOV P3,#0FH;
+02FB 32              515             RETI;
                      516     
                      517     
-                     518     
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE     9
+02FC                 518         DELAY4KBD:
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE     9
 
-                     519     
-0302                 520     PWNWAT: ;power on wait
-0302 C0D0            521             PUSH PSW;
-0304 C0E0            522             PUSH ACC;
-0306 D2D3            523             SETB RS0;
-0308 7928            524             MOV R1,#40;
-030A 7A0A            525             MOV R2,#10;
-030C                 526         PW1:
-030C 00              527             NOP;
-030D 00              528             NOP;
-030E D9FC            529             DJNZ R1,PW1;
-0310 7928            530             MOV R1,#40;
-0312 DAF8            531             DJNZ R2,PW1;
-0314 D0E0            532             POP ACC;
-0316 D0D0            533             POP PSW;
-0318 22              534             RET;
-                     535     
-                     536     
-0319                 537     TIMETAB:
-0319 003F065B        538         DB 00H,3FH,06H,5BH;
-031D 4F666D7D        539         DB 4FH,66H,6DH,7DH;
-0321 077F6F          540         DB 07H,7FH,6FH;
-                     541         ;DB 6FH,7FH,07H,7DH;
-                     542         ;DB 6DH,66H,4FH,5BH;
-                     543         ;DB 06H,3FH;
-                     544     END;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE    10
+02FC 7E0A            519             MOV R6,#10
+02FE                 520         D1:        
+02FE 7FF8            521             MOV R7,#248
+0300 DFFE            522             DJNZ R7,$
+0302 DEFA            523             DJNZ R6,D1
+0304 22              524             RET
+                     525     
+                     526     
+                     527     
+                     528     
+                     529     
+                     530     
+                     531     
+0305                 532     PWNWAT: ;power on wait
+0305 C0D0            533             PUSH PSW;
+0307 C0E0            534             PUSH ACC;
+0309 D2D3            535             SETB RS0;
+030B 7928            536             MOV R1,#40;
+030D 7A0A            537             MOV R2,#10;
+030F                 538         PW1:
+030F 00              539             NOP;
+0310 00              540             NOP;
+0311 D9FC            541             DJNZ R1,PW1;
+0313 7928            542             MOV R1,#40;
+0315 DAF8            543             DJNZ R2,PW1;
+0317 D0E0            544             POP ACC;
+0319 D0D0            545             POP PSW;
+031B 22              546             RET;
+                     547     
+                     548     
+031C                 549     TIMETAB:
+031C 003F065B        550         DB 00H,3FH,06H,5BH;
+0320 4F666D7D        551         DB 4FH,66H,6DH,7DH;
+0324 077F6F          552         DB 07H,7FH,6FH;
+                     553         ;DB 6FH,7FH,07H,7DH;
+                     554         ;DB 6DH,66H,4FH,5BH;
+                     555         ;DB 06H,3FH;
+                     556     END;
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE    10
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -578,77 +590,79 @@ SYMBOL TABLE LISTING
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
 ACC. . . . . . . .  D ADDR   00E0H   A   
-ADJUST . . . . . .  C ADDR   00B6H   A   
-ADJUST1. . . . . .  C ADDR   00BFH   A   
+ADJUST . . . . . .  C ADDR   00B9H   A   
+ADJUST1. . . . . .  C ADDR   00C2H   A   
 ADJUSTFLAG . . . .  N NUMB   0051H   A   
-ASGTO. . . . . . .  C ADDR   00D2H   A   
+ASGTO. . . . . . .  C ADDR   00D5H   A   
 B. . . . . . . . .  D ADDR   00F0H   A   
-BAL1 . . . . . . .  C ADDR   0110H   A   
-BAL2 . . . . . . .  C ADDR   012AH   A   
-BAL3 . . . . . . .  C ADDR   0144H   A   
+BAL1 . . . . . . .  C ADDR   0113H   A   
+BAL2 . . . . . . .  C ADDR   012DH   A   
+BAL3 . . . . . . .  C ADDR   0147H   A   
 BALANCE. . . . . .  N NUMB   0056H   A   
-BREAK. . . . . . .  C ADDR   0152H   A   
-C11. . . . . . . .  C ADDR   018BH   A   
-C12. . . . . . . .  C ADDR   018CH   A   
-C13. . . . . . . .  C ADDR   018DH   A   
-C14. . . . . . . .  C ADDR   018EH   A   
-C21. . . . . . . .  C ADDR   01AEH   A   
-C21BUF2. . . . . .  C ADDR   01BDH   A   
-C22. . . . . . . .  C ADDR   01C4H   A   
-C22BUF2. . . . . .  C ADDR   01D1H   A   
-C23. . . . . . . .  C ADDR   01D8H   A   
-C23BUF2. . . . . .  C ADDR   01E5H   A   
-C24. . . . . . . .  C ADDR   01ECH   A   
-C31. . . . . . . .  C ADDR   0210H   A   
-C31BUF2. . . . . .  C ADDR   021DH   A   
-C32. . . . . . . .  C ADDR   0224H   A   
-C32BUF2. . . . . .  C ADDR   0231H   A   
-C33. . . . . . . .  C ADDR   0238H   A   
-C33BUF2. . . . . .  C ADDR   0245H   A   
-C34. . . . . . . .  C ADDR   024CH   A   
-C34BUF2. . . . . .  C ADDR   0259H   A   
-C41. . . . . . . .  C ADDR   027DH   A   
-C41BUF2. . . . . .  C ADDR   028AH   A   
-C42. . . . . . . .  C ADDR   0291H   A   
-C42BUF2. . . . . .  C ADDR   029EH   A   
-C43. . . . . . . .  C ADDR   02A5H   A   
-C43BUF2. . . . . .  C ADDR   02B2H   A   
-C44. . . . . . . .  C ADDR   02B9H   A   
-CFG. . . . . . . .  C ADDR   00CDH   A   
-CMP4 . . . . . . .  C ADDR   00A2H   A   
-D1 . . . . . . . .  C ADDR   02FBH   A   
+BREAK. . . . . . .  C ADDR   0155H   A   
+C11. . . . . . . .  C ADDR   018EH   A   
+C12. . . . . . . .  C ADDR   018FH   A   
+C13. . . . . . . .  C ADDR   0190H   A   
+C14. . . . . . . .  C ADDR   0191H   A   
+C21. . . . . . . .  C ADDR   01B1H   A   
+C21BUF2. . . . . .  C ADDR   01C0H   A   
+C22. . . . . . . .  C ADDR   01C7H   A   
+C22BUF2. . . . . .  C ADDR   01D4H   A   
+C23. . . . . . . .  C ADDR   01DBH   A   
+C23BUF2. . . . . .  C ADDR   01E8H   A   
+C24. . . . . . . .  C ADDR   01EFH   A   
+C31. . . . . . . .  C ADDR   0213H   A   
+C31BUF2. . . . . .  C ADDR   0220H   A   
+C32. . . . . . . .  C ADDR   0227H   A   
+C32BUF2. . . . . .  C ADDR   0234H   A   
+C33. . . . . . . .  C ADDR   023BH   A   
+C33BUF2. . . . . .  C ADDR   0248H   A   
+C34. . . . . . . .  C ADDR   024FH   A   
+C34BUF2. . . . . .  C ADDR   025CH   A   
+C41. . . . . . . .  C ADDR   0280H   A   
+C41BUF2. . . . . .  C ADDR   028DH   A   
+C42. . . . . . . .  C ADDR   0294H   A   
+C42BUF2. . . . . .  C ADDR   02A1H   A   
+C43. . . . . . . .  C ADDR   02A8H   A   
+C43BUF2. . . . . .  C ADDR   02B5H   A   
+C44. . . . . . . .  C ADDR   02BCH   A   
+CFG. . . . . . . .  C ADDR   00D0H   A   
+CMP3 . . . . . . .  C ADDR   00A0H   A   
+CMP5 . . . . . . .  C ADDR   00A5H   A   
+D1 . . . . . . . .  C ADDR   02FEH   A   
 DEF. . . . . . . .  C ADDR   0000H   A   
 DEFAULTDT. . . . .  N NUMB   0055H   A   
-DELAY. . . . . . .  C ADDR   00FAH   A   
-DELAY1S. . . . . .  C ADDR   00D8H   A   
-DELAY4KBD. . . . .  C ADDR   02F9H   A   
-DELAY50MS. . . . .  C ADDR   00DEH   A   
+DELAY. . . . . . .  C ADDR   00FDH   A   
+DELAY10MS. . . . .  C ADDR   00E1H   A   
+DELAY1S. . . . . .  C ADDR   00DBH   A   
+DELAY4KBD. . . . .  C ADDR   02FCH   A   
+DTCNSPDCNRL. . . .  C ADDR   0094H   A   
 EA . . . . . . . .  B ADDR   00A8H.7 A   
 ET0. . . . . . . .  B ADDR   00A8H.1 A   
 ET1. . . . . . . .  B ADDR   00A8H.3 A   
 EX1. . . . . . . .  B ADDR   00A8H.2 A   
-EXITSET. . . . . .  C ADDR   02C7H   A   
+EXITSET. . . . . .  C ADDR   02CAH   A   
 IT1. . . . . . . .  B ADDR   0088H.2 A   
-KBSCN. . . . . . .  C ADDR   0157H   A   
-KBSCNEND . . . . .  C ADDR   02C5H   A   
-KBSCNR1. . . . . .  C ADDR   0174H   A   
-KBSCNR2. . . . . .  C ADDR   0197H   A   
-KBSCNR3. . . . . .  C ADDR   01F9H   A   
-KBSCNR4. . . . . .  C ADDR   0266H   A   
+KBSCN. . . . . . .  C ADDR   015AH   A   
+KBSCNEND . . . . .  C ADDR   02C8H   A   
+KBSCNR1. . . . . .  C ADDR   0177H   A   
+KBSCNR2. . . . . .  C ADDR   019AH   A   
+KBSCNR3. . . . . .  C ADDR   01FCH   A   
+KBSCNR4. . . . . .  C ADDR   0269H   A   
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 17:04:10 PAGE    11
+
 KEYBUF1. . . . . .  N NUMB   0054H   A   
 KEYBUF2. . . . . .  N NUMB   0053H   A   
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 16:30:00 PAGE    11
-
 KEYBUF3. . . . . .  N NUMB   0052H   A   
-LIGHT. . . . . . .  C ADDR   00A5H   A   
-LIGHTTIME. . . . .  C ADDR   00C3H   A   
+LIGHT. . . . . . .  C ADDR   00A8H   A   
+LIGHTTIME. . . . .  C ADDR   00C6H   A   
 LOOP . . . . . . .  C ADDR   007DH   A   
 LOOPTAG. . . . . .  N NUMB   0060H   A   
 LOOPTIME . . . . .  N NUMB   0059H   A   
 MAIN . . . . . . .  C ADDR   0060H   A   
-NDINC. . . . . . .  C ADDR   02EEH   A   
-NDINCBK. . . . . .  C ADDR   02F3H   A   
-NUMDIS . . . . . .  C ADDR   0109H   A   
+NDINC. . . . . . .  C ADDR   02F1H   A   
+NDINCBK. . . . . .  C ADDR   02F6H   A   
+NUMDIS . . . . . .  C ADDR   010CH   A   
 OFFSET1. . . . . .  N NUMB   0058H   A   
 OFFSET2. . . . . .  N NUMB   0057H   A   
 P0 . . . . . . . .  D ADDR   0080H   A   
@@ -656,26 +670,26 @@ P1 . . . . . . . .  D ADDR   0090H   A
 P2 . . . . . . . .  D ADDR   00A0H   A   
 P3 . . . . . . . .  D ADDR   00B0H   A   
 PSW. . . . . . . .  D ADDR   00D0H   A   
-PW1. . . . . . . .  C ADDR   030CH   A   
-PWNWAT . . . . . .  C ADDR   0302H   A   
+PW1. . . . . . . .  C ADDR   030FH   A   
+PWNWAT . . . . . .  C ADDR   0305H   A   
 PX1. . . . . . . .  B ADDR   00B8H.2 A   
 RS0. . . . . . . .  B ADDR   00D0H.3 A   
 SP . . . . . . . .  D ADDR   0081H   A   
 TH0. . . . . . . .  D ADDR   008CH   A   
 THT. . . . . . . .  N NUMB   00D8H   A   
-TIMEOUT. . . . . .  C ADDR   00EDH   A   
-TIMETAB. . . . . .  C ADDR   0319H   A   
+TIMEOUT. . . . . .  C ADDR   00F0H   A   
+TIMETAB. . . . . .  C ADDR   031CH   A   
 TL0. . . . . . . .  D ADDR   008AH   A   
 TLT. . . . . . . .  N NUMB   00F0H   A   
 TMOD . . . . . . .  D ADDR   0089H   A   
 TR0. . . . . . . .  B ADDR   0088H.4 A   
 TR1. . . . . . . .  B ADDR   0088H.6 A   
-WAT4EXIT . . . . .  C ADDR   02C9H   A   
-WAT4RLS. . . . . .  C ADDR   0162H   A   
-WAT4RLS1 . . . . .  C ADDR   018FH   A   
-WAT4RLS2 . . . . .  C ADDR   01F1H   A   
-WAT4RLS3 . . . . .  C ADDR   025EH   A   
-WAT4RLS4 . . . . .  C ADDR   02BDH   A   
+WAT4EXIT . . . . .  C ADDR   02CCH   A   
+WAT4RLS. . . . . .  C ADDR   0165H   A   
+WAT4RLS1 . . . . .  C ADDR   0192H   A   
+WAT4RLS2 . . . . .  C ADDR   01F4H   A   
+WAT4RLS3 . . . . .  C ADDR   0261H   A   
+WAT4RLS4 . . . . .  C ADDR   02C0H   A   
 
 
 REGISTER BANK(S) USED: 0 
