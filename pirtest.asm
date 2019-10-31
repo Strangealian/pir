@@ -11,6 +11,7 @@ DEF:
     KEYBUF1 EQU 54H;键盘读入数据十位
     KEYBUF2 EQU 53H;键盘读入数据个位；
     KEYBUF3 EQU 52H;
+    ADJUSTFLAG EQU 51H;
 
     ORG 0000H;
     AJMP MAIN;
@@ -29,7 +30,8 @@ MAIN:
     MOV OFFSET2,#03H;
     MOV DEFAULTDT,#30;
     MOV LOOPTIME,#05H;
-
+    MOV ADJUSTFLAG,#1;
+    MOV KEYBUF2,#00H;
     SETB EA;
 	SETB EX1;
 	SETB IT1;
@@ -38,7 +40,7 @@ MAIN:
     LOOP:
         MOV LOOPTAG,#00H;
         MOV BALANCE,#0FFH;
-    
+        MOV ADJUSTFLAG,#1;
 
         MOV P1,#0FFH;p1为数据输出，点亮LED用
         MOV P0,#0FFH;
@@ -63,7 +65,20 @@ MAIN:
         NOP;
         MOV R5,DEFAULTDT;
         MOV R2,OFFSET2;存放数码管十位对应偏移地址
+        MOV A,ADJUSTFLAG;
+        CJNE A,#0,ADJUST;
         MOV R3,OFFSET1;存放数码管个位对应偏移地址
+        
+        AJMP LIGHTTIME;
+        ADJUST:
+            MOV A,KEYBUF2;
+            CJNE A,#00H,ADJUST1;
+            MOV R3,OFFSET1;
+            AJMP LIGHTTIME;
+            ADJUST1:
+            MOV R3,A;
+            MOV ADJUSTFLAG,#0;
+
         LIGHTTIME:
             LCALL DELAY1S;延时1s后数码管显示相应数字
             DEC R3;
@@ -187,8 +202,8 @@ KBSCN:
 
         CPL P1.7;
         MOV KEYBUF1,#03H;
-        MOV KEYBUF2,#05H;
-        MOV DEFAULTDT,#35;
+        MOV KEYBUF2,#00H;
+        MOV DEFAULTDT,#30;
         /*进入中断等待按键释放*/
     WAT4RLS:;WAITE FOR REALSE
         MOV A,P3;
@@ -292,7 +307,7 @@ KBSCN:
 
     KBSCNR3:
         MOV P3,#0FFH;
-        CLR P3.7;
+        CLR P3.6;
         MOV A,P3;
         ANL A,#0FH;
         XRL A,#0FH;
@@ -352,7 +367,7 @@ KBSCN:
 
     KBSCNR4:
         MOV P3,#0FFH;
-        CLR P3.6;
+        CLR P3.7;
         MOV A,P3;
         ANL A,#0FH;
         XRL A,#0FH;
@@ -427,7 +442,7 @@ KBSCN:
         MOV A,KEYBUF1;
         MOV B,#10;
         MUL AB;
-        ;ADD A,KEYBUF1;
+        ADD A,KEYBUF2;
         MOV KEYBUF3,A;
 
         CLR RS0;USE THE DEFAULT SET OF REGISTERS;
@@ -437,7 +452,7 @@ KBSCN:
         ;MOV OFFSET1,KEYBUF2;
         ;INC OFFSET1;
         MOV OFFSET2,KEYBUF1;
-        ;INC OFFSET2
+        INC OFFSET2;为什么要加1，因为存放数码管对应16进制的表最前面多加了一个00H;
         ;MOV R5,KEYBUF3;
         MOV DEFAULTDT,KEYBUF3;
 
