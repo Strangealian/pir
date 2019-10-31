@@ -188,11 +188,6 @@
           <WinNumber>1</WinNumber>
           <ItemText>58H</ItemText>
         </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>@58H</ItemText>
-        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -257,7 +252,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
+      <TopLine>5</TopLine>
       <CurrentLine>17</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\pirtest.asm</PathWithFileName>
@@ -1611,7 +1606,7 @@
         <Doc>
           <Name>.\pirtest.asm</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
+          <TopLine>5</TopLine>
           <CurrentLine>17</CurrentLine>
         </Doc>
       </Documents>

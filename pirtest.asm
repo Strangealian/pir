@@ -4,7 +4,7 @@ DEF:
     OFFSET1 EQU 58H;个位偏移地址记录
     OFFSET2 EQU 57H;十位偏移地址记录
     BALANCE EQU 56H;负载 均衡标记
-    DEFAULTDT EQU 55H;;
+    DEFAULTDT EQU 55H;
     THT EQU 0D8H;计数器高字节
     TLT EQU 0F0H;计数器低字节
 
@@ -197,15 +197,28 @@ DELAY:;计数器1溢出中断出口
 
 /*1号中断入口
 *键盘响应
+*   键盘模型
+*   X       7       8       9   P3.0
+*   X       4       5       6   P3.1
+*   X       1       2       3   P3.2
+*   X       *       0       #   P3.3
+*
+*   P3.4    P3.5    P3.6    P3.7
+*
+*   *作为确认设置按键
+*   #作为‘设置’按键，按下‘#’就进入设置
+*
+*
+*
 */
 KBSCN:
 
-        CPL P1.7;
-        /*默认设置，计实30s*/
+        CPL P1.7;p1.7为键盘中断标志，灯亮说明正确进入键盘中断服务程序
+        /*默认设置，倒计时30s*/
         MOV KEYBUF1,#03H;
         MOV KEYBUF2,#00H;
         MOV DEFAULTDT,#30;
-        /*进入中断等待按键释放*/
+        /*进入中断等待按键释放，*/
     WAT4RLS:;WAITE FOR REALSE
         MOV A,P3;
         ANL A,#0FH;
@@ -213,12 +226,23 @@ KBSCN:
         JNZ WAT4RLS;
 
 
-
+        /*保护现场，PSW,ACC入栈，使用第二组寄存器*/
         PUSH PSW;
         PUSH ACC;
         SETB RS0;USE THE SECOND SET OF REGISTERS;
         CLR IT1;
         MOV R1,#0;R1用作标志，用来标记数据应该存入哪个buf。
+
+    /*
+    *扫描原理：截取P3口低四位，异或1111，哪一位为1说明这一位对应的按键被按下，
+    *一次只能判断一位，若多位同时按下，则无法判断，
+    *键盘事件响应的结果存入KEYBUF1和KEYBUF2，KEYBUF1存放十位，KEYBUF2存放个位，
+    *循环移位存储，若顺序按下2，4，结果为(KEYBUF1)=2，(KEYBUF2)=4;
+    *若顺序按下2，4，2，(KEYBUF1)=4,(KEYBUF2)=2;
+    *C11对应第一列第一行；C12对应第一列第二行
+    */
+
+    /*第一列扫描，程序未使用第一列键盘，故此列键盘不响应*/
     KBSCNR1:
         MOV P3,#0FFH;
         CLR P3.4;
@@ -226,6 +250,7 @@ KBSCN:
         ANL A,#0FH;
         XRL A,#0FH;
         JZ KBSCNR2;
+        /*键盘消抖*/
         CALL DELAY4KBD;
 
         MOV A,P3;
@@ -240,7 +265,7 @@ KBSCN:
         NOP;
     C14:
         NOP;
-
+    /*等待按键释放*/
     WAT4RLS1:;WAITE FOR REALSE
         MOV A,P3;
         ANL A,#0FH;
@@ -263,6 +288,9 @@ KBSCN:
 
     C21:
         CJNE A,#01H,C22;0001左上角被按下
+        /*
+        *条件判断，选择存数据到哪个KEYBUF
+        */
         CJNE R1,#0,C21BUF2;
         MOV KEYBUF1,#07H;
         CPL P1.0;
@@ -450,8 +478,6 @@ KBSCN:
         POP ACC;
         POP PSW;
 
-        ;MOV OFFSET1,KEYBUF2;
-        ;INC OFFSET1;
         MOV OFFSET2,KEYBUF1;
         /*为什么要用R4,因为r6,r5,r3,r2都为专用寄存器，不要改变他们的值
         R7,R1,R0都可以用

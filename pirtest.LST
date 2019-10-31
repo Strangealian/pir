@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     1
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -13,7 +13,7 @@ LOC  OBJ            LINE     SOURCE
   0058                 4         OFFSET1 EQU 58H;个位偏移地址记录
   0057                 5         OFFSET2 EQU 57H;十位偏移地址记录
   0056                 6         BALANCE EQU 56H;负载 均衡标记
-  0055                 7         DEFAULTDT EQU 55H;;
+  0055                 7         DEFAULTDT EQU 55H;
   00D8                 8         THT EQU 0D8H;计数器高字节
   00F0                 9         TLT EQU 0F0H;计数器低字节
                       10     
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 009B 7007             56             JNZ LIGHT;
 009D EF               57             MOV A,R7;如果不是0 恢复A里面的数据
 009E 5403             58             ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     2
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     2
 
 00A0 7002             59             JNZ LIGHT;
 00A2 017D             60             AJMP LOOP;
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
                      122     
                      123     
                      124     
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     3
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     3
 
 00F9                 125     DELAY:;计数器1溢出中断出口
 00F9 C0D0            126             PUSH PSW;
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
 014E 758900          188             MOV TMOD,#00H;
                      189             ;MOV 60H,#00H;
                      190             
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     4
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     4
 
 0151                 191         BREAK:
 0151 D0E0            192             POP ACC;
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
 019D 540F            254             ANL A,#0FH;
 019F 640F            255             XRL A,#0FH;
 01A1 6055            256             JZ KBSCNR3;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     5
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     5
 
 01A3 51F8            257             CALL DELAY4KBD;
                      258     
@@ -337,7 +337,7 @@ LOC  OBJ            LINE     SOURCE
 020B 640F            320             XRL A,#0FH;
 020D 6056            321             JZ KBSCNR4;
                      322     
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     6
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     6
 
 020F                 323         C31:
 020F B40111          324             CJNE A,#01H,C32;0001左上角被按下
@@ -405,7 +405,7 @@ LOC  OBJ            LINE     SOURCE
 0282 755409          386             MOV KEYBUF1,#09H;
 0285 7901            387             MOV R1,#1;
 0287 41BC            388             AJMP WAT4RLS4;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     7
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     7
 
 0289                 389         C41BUF2:
 0289 755309          390             MOV KEYBUF2,#09H;
@@ -473,7 +473,7 @@ LOC  OBJ            LINE     SOURCE
                      452     
                      453             ;MOV OFFSET1,KEYBUF2;
                      454             ;INC OFFSET1;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     8
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     8
 
 02E0 855457          455             MOV OFFSET2,KEYBUF1;
                      456             
@@ -537,7 +537,7 @@ LOC  OBJ            LINE     SOURCE
                      513         ;DB 6DH,66H,4FH,5BH;
                      514         ;DB 06H,3FH;
                      515     END;
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE     9
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE     9
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -605,7 +605,7 @@ KBSCNR4. . . . . .  C ADDR   0265H   A
 KEYBUF1. . . . . .  N NUMB   0054H   A   
 KEYBUF2. . . . . .  N NUMB   0053H   A   
 KEYBUF3. . . . . .  N NUMB   0052H   A   
-A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 13:20:28 PAGE    10
+A51 MACRO ASSEMBLER  PIRTEST                                                              10/31/2019 14:26:44 PAGE    10
 
 LIGHT. . . . . . .  C ADDR   00A4H   A   
 LIGHTTIME. . . . .  C ADDR   00C2H   A   
