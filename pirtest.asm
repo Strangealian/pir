@@ -201,6 +201,7 @@ DELAY:;计数器1溢出中断出口
 KBSCN:
 
         CPL P1.7;
+        /*默认设置，计实30s*/
         MOV KEYBUF1,#03H;
         MOV KEYBUF2,#00H;
         MOV DEFAULTDT,#30;
@@ -452,9 +453,21 @@ KBSCN:
         ;MOV OFFSET1,KEYBUF2;
         ;INC OFFSET1;
         MOV OFFSET2,KEYBUF1;
-        INC OFFSET2;为什么要加1，因为存放数码管对应16进制的表最前面多加了一个00H;
-        ;MOV R5,KEYBUF3;
+        /*为什么要用R4,因为r6,r5,r3,r2都为专用寄存器，不要改变他们的值
+        R7,R1,R0都可以用
+        这里是第一组寄存器
+
+        为什么整数十的倍数不需要加一，因为在主程序里面判断了计数值是不是十的倍数
+        */
+        MOV R4,KEYBUF2;
+        CJNE R4,#00H,NDINC;
         MOV DEFAULTDT,KEYBUF3;
+        AJMP NDINCBK;
+        NDINC:
+        ;MOV R5,KEYBUF3;
+        INC OFFSET2;为什么要加1，因为存放数码管对应16进制的表最前面多加了一个00H;
+        MOV DEFAULTDT,KEYBUF3;
+        NDINCBK:
 
         SETB IT1;
         MOV P3,#0FH;
