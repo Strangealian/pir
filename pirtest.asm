@@ -37,6 +37,7 @@ MAIN:
 	SETB IT1;
     /*外部中断1最高优先级*/
     SETB PX1;
+    
     LOOP:
         MOV LOOPTAG,#00H;
         MOV BALANCE,#0FFH;
@@ -47,17 +48,19 @@ MAIN:
         MOV P3,#0FH;p3为键盘输入口
         MOV P2,#0FFH;p2作为数据输入口
 
+        MOV R7,#0AH;
+        DTCNSPDCNRL:;DETECTION SPEED CONTROL 检测速度控制
+
+            LCALL DELAY4KBD;每秒100次
 
         MOV A,P2;
         ANL A,#07H; 0  截取三位输入信号，只有输入信号是0，2，4才点亮
-        MOV R7,A;暂存
-        JNZ LIGHT;
-        ANL A,#05H;如果不是0则截取出三位，与101，如果为0说明为2；点亮
-        JNZ LIGHT;
-        MOV A,R7;如果不是0 恢复A里面的数据
-        ANL A,#03H;如果也不是2，与011，如果为0说明为4，点亮
-        JNZ LIGHT;
-        AJMP LOOP;
+        ;MOV R7,A;暂存
+        JZ LIGHT;为0直接跳转到点亮led；
+        CJNE A,#02H,CMP4;
+        AJMP LIGHT;为2，直接跳转到LIGHT
+        CMP4:
+            CJNE A,#04H,LOOP;为4，执行LIGHT否则返回继续读取P2口
 
     LIGHT:
         CPL P1.0;
