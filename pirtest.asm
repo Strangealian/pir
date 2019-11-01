@@ -44,25 +44,26 @@ MAIN:
         MOV ADJUSTFLAG,#1;
 
         MOV P1,#0FFH;p1为数据输出，点亮LED用
-        MOV P0,#0FFH;
+        MOV P0,#00H;
+
         MOV P3,#0FH;p3为键盘输入口
         MOV P2,#0FFH;p2作为数据输入口
+        ;LCALL DELAY4KBD;每秒100次
 
-        MOV R7,#0AH;
-        DTCNSPDCNRL:;DETECTION SPEED CONTROL 检测速度控制
+        ;MOV R7,#0AH;
+        ;DTCNSPDCNRL:;DETECTION SPEED CONTROL 检测速度控制
 
-            LCALL DELAY4KBD;每秒100次
+            
 
         MOV A,P2;
         ANL A,#07H; 0  截取三位输入信号，只有输入信号是1，3，5才点亮
-        ;JZ LIGHT;为0直接跳转到点亮led；
         CJNE A,#01H,CMP3;
         AJMP LIGHT;
         CMP3:
             CJNE A,#03H,CMP5;
-            AJMP LIGHT;为2，直接跳转到LIGHT
+            AJMP LIGHT;为3，直接跳转到LIGHT
         CMP5:
-            CJNE A,#05H,LOOP;为4，执行LIGHT否则返回继续读取P2口
+            CJNE A,#05H,LOOP;为5，执行LIGHT否则返回继续读取P2口
 
     LIGHT:
         CPL P1.0;
@@ -121,6 +122,13 @@ MAIN:
             ASGTO:
                 DJNZ R5,LIGHTTIME;
                 CPL P1.0;
+                CLR P2.6;
+                SETB P2.7;
+                MOV P0,#00H;
+                CLR P2.7;
+                SETB P2.6;
+                MOV P0,#00H;
+                CLR P2.6;
                 AJMP LOOP;
 
 ;延时1s子程序
@@ -146,7 +154,7 @@ DELAY1S:
         MOV TMOD,#01H;计数器1工作于方式1
         MOV TH0,#THT;加一计数器高字节
         MOV TL0,#TLT;加一计数器低字节
-        SETB EA;
+        ;SETB EA;
         SETB TR0;
         SETB ET0;
         
@@ -161,8 +169,8 @@ DELAY1S:
 
 
 
-
-DELAY:;计数器1溢出中断出口
+;计数器1溢出中断出口
+DELAY:
         PUSH PSW;
         PUSH ACC;
         MOV R6,LOOPTAG;
@@ -222,9 +230,10 @@ DELAY:;计数器1溢出中断出口
     BAL3:
         CJNE R6,#64H,BREAK;
         CLR P2.6;
-        CLR ET1;
-        CLR TR1;
-        CLR EA;
+        
+        CLR TR0;
+        CLR ET0;
+        ;CLR EA;
         MOV TMOD,#00H;
         ;MOV 60H,#00H;
         
