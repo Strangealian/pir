@@ -98,16 +98,19 @@ MAIN:
             CJNE A,#01H,CMP3INT;
             CLR TR0;
             CLR ET0;
+            MOV ADJUSTFLAG,#1;
             AJMP LIGHT;
             CMP3INT:
                 CJNE A,#03H,CMP5INT;
                 CLR TR0;
                 CLR ET0;
+                MOV ADJUSTFLAG,#1;
                 AJMP LIGHT;为2，直接跳转到LIGHT
             CMP5INT:
                 CJNE A,#05H,NOINT;为4，执行LIGHT否则返回继续读取P2口
                 CLR TR0;
                 CLR ET0;
+                MOV ADJUSTFLAG,#1;
                 AJMP LIGHT;
                 /**************************************/
 
@@ -566,7 +569,7 @@ KBSCN:
         INC OFFSET2;为什么要加1，因为存放数码管对应16进制的表最前面多加了一个00H;
         MOV DEFAULTDT,KEYBUF3;
         NDINCBK:
-
+        MOV ADJUSTFLAG,#1;
         SETB IT1;
         MOV P3,#0FH;
         RETI;
