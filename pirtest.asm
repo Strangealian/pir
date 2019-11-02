@@ -1,3 +1,8 @@
+/*
+*author:xim
+*date:2019-11-1
+*
+*/
 DEF:
     LOOPTAG EQU 60H;次数统计保存地址
     LOOPTIME EQU 59H;延时循环次数保存地址
