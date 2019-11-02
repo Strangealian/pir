@@ -46,13 +46,14 @@ MAIN:
         MOV P1,#0FFH;p1为数据输出，点亮LED用
         MOV P0,#00H;
 
-        MOV P3,#0FH;p3为键盘输入口
+        MOV P3,#0FFH;p3为键盘输入口
+        CLR P3.7;
         MOV P2,#0FFH;p2作为数据输入口
         ;LCALL DELAY4KBD;每秒100次
 
         ;MOV R7,#0AH;
         ;DTCNSPDCNRL:;DETECTION SPEED CONTROL 检测速度控制
-
+        SETB IT1;进入键盘中断后把外部中断设置为电平触发，消除机械键盘毛刺影响；退出中断后再恢复；
             
 
         MOV A,P2;
@@ -87,7 +88,7 @@ MAIN:
 
         LIGHTTIME:
             LCALL DELAY1S;延时1s后数码管显示相应数字
-
+            SETB IT1;进入键盘中断后把外部中断设置为电平触发，消除机械键盘毛刺影响；退出中断后再恢复；
 
             /********************************/
             ;MOV P2,#0FFH;p2作为数据输入口
@@ -570,8 +571,9 @@ KBSCN:
         MOV DEFAULTDT,KEYBUF3;
         NDINCBK:
         MOV ADJUSTFLAG,#1;
-        SETB IT1;
-        MOV P3,#0FH;
+        ;SETB IT1;
+        MOV P3,#0FFH;
+        CLR P3.7;
         RETI;
 
 
